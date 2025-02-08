@@ -4,33 +4,85 @@ import { defineUserConfig } from 'vuepress'
 import { viteBundler } from '@vuepress/bundler-vite'
 
 export default defineUserConfig({
-  lang: 'en-US',
-
-  title: 'VuePress',
-  description: 'My first VuePress Site',
-
+  locales: {
+    // 键名是该语言所属的子路径
+    // 作为特例，默认语言可以使用 '/' 作为其路径。
+    '/': {
+      lang: 'en-US',
+      title: 'My Blog',
+      description: 'This is my blog',
+    },
+    '/zh/': {
+      lang: 'zh-CN',
+      title: '我的博客',
+      description: '这是我的博客',
+    },
+  },
   theme: defaultTheme({
-    logo: 'https://vuejs.press/images/hero.png',
-
-    navbar: [
-      '/',
-      {
-        text: 'Article',
-        link: '/article/',
+    locales: {
+      '/': {
+        navbar: [
+          '/',
+          {
+            text: 'Article',
+            link: '/article/',
+          },
+          {
+            text: 'Category',
+            link: '/category/',
+          },
+          {
+            text: 'Tag',
+            link: '/tag/',
+          },
+          {
+            text: 'Timeline',
+            link: '/timeline/',
+          },
+        ],
+        // 为 en-US locale 增加 标题
+        selectLanguageName: 'English',
       },
-      {
-        text: 'Category',
-        link: '/category/',
+      '/zh/': {
+        navbar: [
+          '/zh/',
+          {
+            text: '文章',
+            link: '/zh/article/',
+          },
+          {
+            text: '分类',
+            link: '/zh/category/',
+          },
+          {
+            text: '标签',
+            link: '/zh/tag/',
+          },
+          {
+            text: '时间轴',
+            link: '/zh/timeline/',
+          },
+        ],
+        // 为 zh-CN locale 增加 标题
+        selectLanguageName: '简体中文',
+        editLinkText: '在 GitHub 上编辑此页',
+        lastUpdatedText: '上次更新',
+        contributorsText: '贡献者',
+        tip: '提示',
+        warning: '注意',
+        danger: '警告',
+        notFound: [
+          '这里什么都没有',
+          '我们怎么到这儿了？',
+          '这是一个 404 页面',
+          '看起来我们进入了错误的链接',
+        ],
+        backToHome: '返回首页',
+        openInNewWindow: '在新窗口打开',
+        toggleDarkMode: '切换夜间模式',
+        toggleSidebar: '切换侧边栏',
       },
-      {
-        text: 'Tag',
-        link: '/tag/',
-      },
-      {
-        text: 'Timeline',
-        link: '/timeline/',
-      },
-    ],
+    },
   }),
 
   plugins: [
