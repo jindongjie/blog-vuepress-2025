@@ -1,10 +1,6 @@
 ---
 home: true
 title: Home
-actions:
-  - text: Get Started
-    link: /get-started.html
-    type: primary
 
 features:
   - title: Simplicity First

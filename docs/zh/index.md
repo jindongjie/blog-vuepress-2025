@@ -1,10 +1,6 @@
 ---
 home: true
 title: 首页
-actions:
-  - text: 快速开始
-    link: /get-started.html
-    type: primary
 
 features:
   - title: 简约至上
