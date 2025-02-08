@@ -4,6 +4,6 @@ node_modules/
 .env.*.local
 .temp
 .cache
-.vuepress/dist
-.vuepress/.temp
-.vuepress/.cache
+.vuepress/dist/
+.vuepress/.temp/
+.vuepress/.cache/
