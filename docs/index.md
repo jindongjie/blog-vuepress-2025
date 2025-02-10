@@ -1,24 +1,21 @@
 ---
 home: true
 title: Home
-
-features:
-  - title: Simplicity First
-    details: Minimal setup with markdown-centered project structure helps you focus on writing.
-  - title: Vue-Powered
-    details: Enjoy the dev experience of Vue, use Vue components in markdown, and develop custom themes with Vue.
-  - title: Performant
-    details: VuePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
-  - title: Themes
-    details: Providing a default theme out of the box. You can also choose a community theme or create your own one.
-  - title: Plugins
-    details: Flexible plugin API, allowing plugins to provide lots of plug-and-play features for your site.
-  - title: Bundlers
-    details: Default bundler is Vite, while Webpack is also supported. Choose the one you like!
-
-footer: FREE-BSD 3 Licensed | Copyright © 2018-present VuePress Community
+config:
+  - type: banner
+    banner: https://api.pengzhanbo.cn/wallpaper/bing
+    bannerMask:
+      light: 0.1
+      dark: 0.3
+    hero:
+      name: jindongjie
+      tagline: Keep.It.Simple.Stupid
+      text: text
+      actions:
+        - text: My Blog
+          link: /blog/
+          theme: brand
+        - text: Github
+          link: https://github.com/jindongjie
+          theme: alt
 ---
-
-This is the content of home page. Check [Home Page Docs][default-theme-home] for more details.
-
-[default-theme-home]: https://vuejs.press/reference/default-theme/frontmatter.html#home-page
