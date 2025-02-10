@@ -49,7 +49,8 @@ export default defineUserConfig({
       shiki: {
         languages: ['javascript', 'typescript', 'vue', 'bash', 'sh', 'json', 'yaml', 'css', 'html', 'rust', 'c', 'csharp'],
       },
-    }
+    },
+    copyright: 'CC-BY-NC-4.0'
   }),
   bundler: viteBundler(),
 })
