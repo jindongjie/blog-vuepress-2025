@@ -31,6 +31,6 @@ viewBox="0 0 520 520" style="enable-background:new 0 0 520 520;" xml:space="pres
   navbarSocialInclude: ["github", "matrix"],
 
   // editLinkText: "在 GitHub 上编辑此页",
-  footer: { copyright: "Copyright © 2023-present jindongjie" },
+  footer: { copyright: "Copyright © 2023-2025 jindongjie" },
   externalLinkIcon: true,
 });
