@@ -1,13 +1,15 @@
 ---
-title: get-started
-createTime: 2025/02/08 16:52:27
-permalink: /article/crij1h59/
+title: test
+createTime: 2025/02/10 09:39:47
+permalink: /article/jwcy70sa/
 ---
-# chinese
+
+
+# ENGLISHFOLDER
 
 This is a normal page, which contains VuePress basics.
 
-## 123
+## 777
 
 You can add markdown files in your vuepress directory, every markdown file will be converted to a page in your site.
 

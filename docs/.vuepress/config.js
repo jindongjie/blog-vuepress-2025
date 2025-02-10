@@ -26,7 +26,9 @@ export default defineUserConfig({
           {
             text: 'Blog',
             link: '/blog/',
-          }
+          },
+          { text: 'Tags', link: '/blog/tags/' },
+          { text: 'Archives', link: '/blog/archives/' }
         ],
         selectLanguageName: 'English',
       },
@@ -36,7 +38,9 @@ export default defineUserConfig({
           {
             text: '博客',
             link: '/zh/blog/',
-          }
+          },
+          { text: '标签', link: '/zh/blog/tags/' },
+          { text: '归档', link: '/zh/blog/archives/' }
         ],
         selectLanguageName: '简体中文',
       },
