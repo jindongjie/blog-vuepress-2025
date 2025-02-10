@@ -24,8 +24,7 @@ export default defineUserConfig({
         navbar: [
           '/',
           {
-            text: 'Blog',
-            link: '/blog/',
+            text: 'Blog', link: '/blog/',
           },
           { text: 'Tags', link: '/blog/tags/' },
           { text: 'Archives', link: '/blog/archives/' }
@@ -41,6 +40,7 @@ export default defineUserConfig({
           },
           { text: '标签', link: '/zh/blog/tags/' },
           { text: '归档', link: '/zh/blog/archives/' }
+
         ],
         selectLanguageName: '简体中文',
       },
