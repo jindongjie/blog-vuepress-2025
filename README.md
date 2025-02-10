@@ -1,6 +1,6 @@
 # Blog VuePress 2025
 
-This is my personal blog, build by vuepress2
+This is my personal blog, build with vuepress-2 & vuepress-plume-theme
 
 ## Usage
 
