@@ -1,3 +1,8 @@
+---
+title: get-started
+createTime: 2025/02/08 16:52:27
+permalink: /article/crij1h59/
+---
 # chinese
 
 This is a normal page, which contains VuePress basics.

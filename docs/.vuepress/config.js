@@ -1,6 +1,7 @@
 import { blogPlugin } from '@vuepress/plugin-blog'
 import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
+import { plumeTheme } from 'vuepress-theme-plume'
 import { viteBundler } from '@vuepress/bundler-vite'
 
 export default defineUserConfig({
@@ -16,7 +17,7 @@ export default defineUserConfig({
       description: '这是我的博客',
     },
   },
-  theme: defaultTheme({
+  theme: plumeTheme({
     locales: {
       '/': {
         navbar: [
