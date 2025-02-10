@@ -45,6 +45,11 @@ export default defineUserConfig({
         selectLanguageName: '简体中文',
       },
     },
+    plugins: {
+      shiki: {
+        languages: ['javascript', 'typescript', 'vue', 'bash', 'sh', 'json', 'yaml', 'css', 'html', 'rust', 'c', 'csharp'],
+      },
+    }
   }),
   bundler: viteBundler(),
 })
