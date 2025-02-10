@@ -5,6 +5,8 @@ export default defineThemeConfig({
   profile: {
     name: "jindongjie",
     avatar: "/logo/blogger-fav.png",
+    circle: true,
+    location: "LongYan, China",
     description: "Keep.It.Simple.Stupid",
   },
   social: [

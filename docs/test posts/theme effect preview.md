@@ -126,7 +126,7 @@ Right-aligned content
 
 :::
 
-**代码：**
+**Code:**
 
 ```js whitespace
 const a = 1;
@@ -148,7 +148,7 @@ const obj = {
 };
 ```
 
-**Code Blocks TwoSlash：**
+**Code Blocks TwoSlash:**
 
 ```ts twoslash
 // @errors: 2339
@@ -213,7 +213,7 @@ const count = ref(0);
 </template>
 ```
 
-**代码分组：**
+**Code Grouping:**
 
 ::: code-tabs
 @tab tab1
@@ -234,7 +234,7 @@ const c: number = a + b;
 
 :::
 
-**代码块高亮：**
+**Code Block Highlighting:**
 
 ```ts
 function foo() {
@@ -250,7 +250,7 @@ function foo() {
 }
 ```
 
-**代码块聚焦：**
+**Code Block Focus:**
 
 ```ts
 function foo() {
@@ -258,11 +258,11 @@ function foo() {
 }
 ```
 
-::: tip 仅标题
+::: tip Title Only
 :::
 
-::: note 注释
-注释内容 [link](https://github.com/pengzhanbo) `inline code`
+::: note Note
+Note content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -272,8 +272,8 @@ const c = a + b;
 
 :::
 
-::: info 信息
-信息内容 [link](https://github.com/pengzhanbo) `inline code`
+::: info Information
+Information content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -283,8 +283,8 @@ const c = a + b;
 
 :::
 
-::: tip 提示
-提示内容 [link](https://github.com/pengzhanbo) `inline code`
+::: tip Tip
+Tip content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -294,8 +294,8 @@ const c = a + b;
 
 :::
 
-::: warning 警告
-警告内容 [link](https://github.com/pengzhanbo) `inline code`
+::: warning Warning
+Warning content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -305,8 +305,8 @@ const c = a + b;
 
 :::
 
-::: caution 错误
-错误内容 [link](https://github.com/pengzhanbo) `inline code`
+::: caution Error
+Error content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -316,8 +316,8 @@ const c = a + b;
 
 :::
 
-::: important 重要
-重要内容 [link](https://github.com/pengzhanbo) `inline code`
+::: important Important
+Important content [link](https://github.com/pengzhanbo) `inline code`
 
 ```js
 const a = 1;
@@ -327,12 +327,12 @@ const c = a + b;
 
 :::
 
-::: details 详细标题
+::: details Detailed Title
 
-这里是内容。
+Here is the content.
 :::
 
-**GFM alert：**
+**GFM alert:**
 
 > [!note]
 > note
@@ -352,9 +352,9 @@ const c = a + b;
 > [!important]
 > important
 
-**代码演示：**
+**Code Demonstration:**
 
-:::: demo title="常规示例" desc="一个常规示例"
+:::: demo title="Regular Example" desc="A regular example"
 
 ::: code-tabs
 @tab HTML
@@ -385,38 +385,38 @@ app.appendChild(window.document.createElement("small")).textContent = a;
 :::
 ::::
 
-**选项卡：**
+**Tabs:**
 
 ::: tabs
-@tab 标题 1
-内容区块
+@tab Title 1
+Content block
 
-@tab 标题 2
-内容区块
+@tab Title 2
+Content block
 :::
 
 :::: warning
 ::: tabs
-@tab 标题 1
-内容区块
+@tab Title 1
+Content block
 
-@tab 标题 2
-内容区块
+@tab Title 2
+Content block
 :::
 ::::
 
-**脚注：**
+**Footnotes:**
 
-脚注 1 链接[^first]。
+Footnote 1 link[^first].
 
-脚注 2 链接[^second]。
+Footnote 2 link[^second].
 
-行内的脚注^[行内脚注文本] 定义。
+Inline footnote^[Inline footnote text] definition.
 
-重复的页脚定义[^second]。
+Repeated footnote definition[^second].
 
-[^first]: 脚注 **可以包含特殊标记**
+[^first]: Footnote **can contain special markup**
 
-    也可以由多个段落组成
+    It can also consist of multiple paragraphs
 
-[^second]: 脚注文字。
+[^second]: Footnote text.

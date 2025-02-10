@@ -62,6 +62,9 @@ export default defineUserConfig({
           "csharp",
         ],
       },
+      markdownPower: {
+        imageSize: true, // 'local' | 'all'
+      },
     },
     contributors: false,
     copyright: "CC-BY-NC-4.0",
