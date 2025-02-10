@@ -10,7 +10,6 @@ config:
     hero:
       name: jindongjie
       tagline: Keep.It.Simple.Stupid
-      text: text
       actions:
         - text: My Blog
           link: /blog/

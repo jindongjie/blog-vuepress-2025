@@ -10,7 +10,6 @@ config:
     hero:
       name: jindongjie
       tagline: Keep.It.Simple.Stupid
-      text: 文字
       actions:
         - text: 我的博客
           link: /zh/blog/

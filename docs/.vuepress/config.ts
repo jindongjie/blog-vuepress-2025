@@ -22,25 +22,47 @@ export default defineUserConfig({
     locales: {
       "/": {
         navbar: [
-          "/",
+          { text: "Home", link: "/", icon: "material-symbols:home-app-logo" },
           {
             text: "Blog",
             link: "/blog/",
+            icon: "solar:documents-linear",
           },
-          { text: "Tags", link: "/blog/tags/" },
-          { text: "Archives", link: "/blog/archives/" },
+          {
+            text: "Tags",
+            link: "/blog/tags/",
+            icon: "solar:tag-linear",
+          },
+          {
+            text: "Archives",
+            link: "/blog/archives/",
+            icon: "solar:inbox-archive-linear",
+          },
         ],
         selectLanguageName: "English",
       },
       "/zh/": {
         navbar: [
-          "/zh/",
+          {
+            text: "主页",
+            link: "/zh/",
+            icon: "material-symbols:home-app-logo",
+          },
           {
             text: "博客",
             link: "/zh/blog/",
+            icon: "solar:documents-linear",
           },
-          { text: "标签", link: "/zh/blog/tags/" },
-          { text: "归档", link: "/zh/blog/archives/" },
+          {
+            text: "标签",
+            link: "/zh/blog/tags/",
+            icon: "solar:tag-linear",
+          },
+          {
+            text: "归档",
+            link: "/zh/blog/archives/",
+            icon: "solar:inbox-archive-linear",
+          },
         ],
         selectLanguageName: "简体中文",
       },
