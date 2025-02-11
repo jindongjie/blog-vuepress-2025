@@ -1,7 +1,7 @@
 import { defineThemeConfig } from "vuepress-theme-plume";
 
 export default defineThemeConfig({
-  logo: "/logo/logo.png",
+  logo: "/logo/aptrue-sience-logo.png",
   profile: {
     name: "jindongjie",
     avatar: "/logo/blogger-fav.png",
