@@ -3,7 +3,7 @@ home: true
 title: 首页
 config:
   - type: banner
-    banner: https://api.pengzhanbo.cn/wallpaper/bing
+    banner: /images/leafs-autum-sunshine.jpg
     bannerMask:
       light: 0.1
       dark: 0.3
