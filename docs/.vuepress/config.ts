@@ -87,6 +87,11 @@ export default defineUserConfig({
       markdownPower: {
         imageSize: true, // 'local' | 'all'
       },
+      comment: {
+        provider: 'Twikoo',
+        comment: true,
+        envId: ' https://twikoo-cloudflare.1-6c3.workers.dev',
+      }
     },
     contributors: false,
     copyright: "CC-BY-NC-4.0",
