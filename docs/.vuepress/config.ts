@@ -90,7 +90,8 @@ export default defineUserConfig({
       comment: {
         provider: 'Twikoo',
         comment: true,
-        envId: ' https://twikoo-cloudflare.1-6c3.workers.dev',
+        envId: ' https://xxx.vercel.app',
+
       }
     },
     contributors: false,

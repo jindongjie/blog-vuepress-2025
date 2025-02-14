@@ -8,6 +8,9 @@ dependencies:
   '@iconify/json':
     specifier: ^2.2.304
     version: 2.2.305
+  twikoo:
+    specifier: ^1.6.41
+    version: 1.6.41
 
 devDependencies:
   '@vuepress/bundler-vite':
@@ -30,7 +33,7 @@ devDependencies:
     version: 2.0.0-rc.19(@vuepress/bundler-vite@2.0.0-rc.19)(typescript@5.7.3)(vue@3.5.13)
   vuepress-theme-plume:
     specifier: 1.0.0-rc.130
-    version: 1.0.0-rc.130(@algolia/client-search@5.20.2)(@iconify/json@2.2.305)(less@4.2.2)(markdown-it@14.1.0)(sass-embedded@1.83.4)(sass@1.84.0)(search-insights@2.17.3)(stylus@0.64.0)(typescript@5.7.3)(vuepress@2.0.0-rc.19)
+    version: 1.0.0-rc.130(@algolia/client-search@5.20.2)(@iconify/json@2.2.305)(less@4.2.2)(markdown-it@14.1.0)(sass-embedded@1.83.4)(sass@1.84.0)(search-insights@2.17.3)(stylus@0.64.0)(twikoo@1.6.41)(typescript@5.7.3)(vuepress@2.0.0-rc.19)
 
 packages:
 
@@ -2320,7 +2323,7 @@ packages:
       vuepress: 2.0.0-rc.19(@vuepress/bundler-vite@2.0.0-rc.19)(typescript@5.7.3)(vue@3.5.13)
     dev: true
 
-  /@vuepress/plugin-comment@2.0.0-rc.73(typescript@5.7.3)(vuepress@2.0.0-rc.19):
+  /@vuepress/plugin-comment@2.0.0-rc.73(twikoo@1.6.41)(typescript@5.7.3)(vuepress@2.0.0-rc.19):
     resolution: {integrity: sha512-kKIuiDQ7sv4ZzYNrS+FptGiqo9uj3Jx7/r1rZj5FB5zMbdJ8gFAkeSf8tKsQijnBralP1zD1NEr90NnQoi3f+w==}
     peerDependencies:
       '@waline/client': ^3.5.0
@@ -2338,6 +2341,7 @@ packages:
       '@vuepress/helper': 2.0.0-rc.73(typescript@5.7.3)(vuepress@2.0.0-rc.19)
       '@vueuse/core': 12.5.0(typescript@5.7.3)
       giscus: 1.6.0
+      twikoo: 1.6.41
       vue: 3.5.13(typescript@5.7.3)
       vuepress: 2.0.0-rc.19(@vuepress/bundler-vite@2.0.0-rc.19)(typescript@5.7.3)(vue@3.5.13)
     transitivePeerDependencies:
@@ -5137,6 +5141,9 @@ packages:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
     dev: true
 
+  /twikoo@1.6.41:
+    resolution: {integrity: sha512-Hrp/fvk2N5oqin+9bkFVULstL+YMwQjn/vVL8r5FPIhyRBA0zWAgUri4hhCji4FsXegKR6+ihyMPTXBRENjnnA==}
+
   /twoslash-protocol@0.2.12:
     resolution: {integrity: sha512-5qZLXVYfZ9ABdjqbvPc4RWMr7PrpPaaDSeaYY55vl/w1j6H6kzsWK/urAEIXlzYlyrFmyz1UbwIt+AA0ck+wbg==}
     dev: true
@@ -5487,7 +5494,7 @@ packages:
       - typescript
     dev: true
 
-  /vuepress-theme-plume@1.0.0-rc.130(@algolia/client-search@5.20.2)(@iconify/json@2.2.305)(less@4.2.2)(markdown-it@14.1.0)(sass-embedded@1.83.4)(sass@1.84.0)(search-insights@2.17.3)(stylus@0.64.0)(typescript@5.7.3)(vuepress@2.0.0-rc.19):
+  /vuepress-theme-plume@1.0.0-rc.130(@algolia/client-search@5.20.2)(@iconify/json@2.2.305)(less@4.2.2)(markdown-it@14.1.0)(sass-embedded@1.83.4)(sass@1.84.0)(search-insights@2.17.3)(stylus@0.64.0)(twikoo@1.6.41)(typescript@5.7.3)(vuepress@2.0.0-rc.19):
     resolution: {integrity: sha512-5QMYVx5xS2hwD0SeKFCvMMk2BpBUxBMX8cY/4hNwDd/Mxtq3rDiqOJQ9n2Oi5GarnX5dBVOx/pG0larI819LdA==}
     peerDependencies:
       '@iconify/json': ^2
@@ -5521,7 +5528,7 @@ packages:
       '@vuepress-plume/plugin-shikiji': 1.0.0-rc.130(typescript@5.7.3)(vue@3.5.13)(vuepress@2.0.0-rc.19)
       '@vuepress/helper': 2.0.0-rc.73(typescript@5.7.3)(vuepress@2.0.0-rc.19)
       '@vuepress/plugin-cache': 2.0.0-rc.66(vuepress@2.0.0-rc.19)
-      '@vuepress/plugin-comment': 2.0.0-rc.73(typescript@5.7.3)(vuepress@2.0.0-rc.19)
+      '@vuepress/plugin-comment': 2.0.0-rc.73(twikoo@1.6.41)(typescript@5.7.3)(vuepress@2.0.0-rc.19)
       '@vuepress/plugin-docsearch': 2.0.0-rc.73(@algolia/client-search@5.20.2)(search-insights@2.17.3)(typescript@5.7.3)(vuepress@2.0.0-rc.19)
       '@vuepress/plugin-git': 2.0.0-rc.68(vuepress@2.0.0-rc.19)
       '@vuepress/plugin-markdown-hint': 2.0.0-rc.73(markdown-it@14.1.0)(typescript@5.7.3)(vuepress@2.0.0-rc.19)

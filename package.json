@@ -21,6 +21,7 @@
   },
   "packageManager": "pnpm@10.2.1",
   "dependencies": {
-    "@iconify/json": "^2.2.304"
+    "@iconify/json": "^2.2.304",
+    "twikoo": "^1.6.41"
   }
 }
