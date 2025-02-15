@@ -29,6 +29,62 @@ body {
   background-position: 50%;
 }
 
+//twikoo 样式 overwrite
+
+//generic
+.tk-send,
+.tk-preview,
+.tk-error-message,
+.tk-row,
+.tk-meta-input,
+.OwO-item,
+.el-input__inner,
+.el-input-group__prepend,
+.tk-submit-action-icon
+.el-textarea__inner,
+.tk-nick {
+  :hover {
+    border-color: #D5C4A1 !important;
+  }
+  :focus {
+    border-color: #D5C4A1 !important;
+  }
+  border-color:rgba(168, 153, 132, 1) !important;
+}
+//svg icon
+svg {
+  fill: rgba(168, 153, 132, 1) !important;
+}
+
+//nick name span
+.tk-nick:hover, .tk-nick-link {
+  :hover {
+    color: #D5C4A1 !important;
+  }
+  :focus {
+    color: #D5C4A1 !important;
+  }
+}
+//button hover & focus
+.el-button:not(.el-button--primary):not(.el-button--text):hover {
+  border-color: #D5C4A1 !important;
+  color: #D5C4A1 !important;
+  background-color: rgba(243, 238, 226, 0.921) !important;
+}
+
+.el-button:not(.el-button--primary):not(.el-button--text):focus {
+  border-color: #D5C4A1 !important;
+  color: #D5C4A1 !important;
+  background-color: rgba(243, 238, 226, 0.921) !important;
+}
+//send button
+.el-button.tk-send {
+  background-color: rgba(168, 153, 132, 1) !important;
+  border-color: rgba(168, 153, 132, 1) !important;
+}
+
+
+
 :root {
   /**
    * 主题色
