@@ -1,6 +1,14 @@
 @font-face {
   font-family: "ZWZT";
-  src: url("/fonts/003.woff2") format("woff2");
+  src: url("/fonts/ZWZT.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "fira-code";
+  src: url("/fonts/FiraCode-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -86,6 +94,14 @@ svg {
 
 
 :root {
+  /**
+   * code blog theme
+   * -------------------------------------------------------------------------- */
+
+   --vp-font-family-mono: "fira-code", "Consolas", "Courier New", monospace;
+   --vp-code-font-size: 0.9em;
+   --vp-code-line-height: 1.3em;
+
   /**
    * 主题色
    * -------------------------------------------------------------------------- */
