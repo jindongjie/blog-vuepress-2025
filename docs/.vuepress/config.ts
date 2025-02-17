@@ -85,14 +85,17 @@ export default defineUserConfig({
         ],
       },
       markdownPower: {
+        demo: true,
+        repl: {
+          rust: true,
+        },
         imageSize: true, // 'local' | 'all'
       },
       comment: {
-        provider: 'Twikoo',
+        provider: "Twikoo",
         comment: true,
-        envId: 'https://twikoo-cloudflare.1-6c3.workers.dev',
-
-      }
+        envId: "https://twikoo-cloudflare.1-6c3.workers.dev",
+      },
     },
     contributors: false,
     copyright: "CC-BY-NC-4.0",
