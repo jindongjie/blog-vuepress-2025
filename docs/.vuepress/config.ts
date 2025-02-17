@@ -1,5 +1,3 @@
-import { blogPlugin } from "@vuepress/plugin-blog";
-import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { plumeTheme } from "vuepress-theme-plume";
 import { viteBundler } from "@vuepress/bundler-vite";
@@ -86,9 +84,6 @@ export default defineUserConfig({
       },
       markdownPower: {
         demo: true,
-        repl: {
-          rust: true,
-        },
         imageSize: true, // 'local' | 'all'
       },
       comment: {
