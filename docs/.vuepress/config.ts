@@ -89,8 +89,8 @@ export default defineUserConfig({
       comment: {
         provider: "Twikoo",
         comment: true,
-        envId: "https://twikoo-cloudflare.1-6c3.workers.dev",
-      },
+        envId: 'https://ar0m.com/cloudflare-twikoo',
+      }
     },
     contributors: false,
     copyright: "CC-BY-NC-4.0",
