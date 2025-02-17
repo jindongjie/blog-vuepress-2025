@@ -8,3 +8,4 @@ node_modules/
 .vuepress/.temp/
 .vuepress/.cache/
 docs/.vuepress/dist/
+docs/.vuepress/plume.config.ts.*mjs
