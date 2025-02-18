@@ -4,7 +4,7 @@ export default defineThemeConfig({
   logo: "/logo/aptrue-sience-logo.png",
   profile: {
     name: "jindongjie",
-    avatar: "/logo/blogger-fav.png",
+    avatar: "/logo/Lambda_logo.svg",
     circle: true,
     location: "LongYan, China",
     description: "Keep.It.Simple.Stupid",
