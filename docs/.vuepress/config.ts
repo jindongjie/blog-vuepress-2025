@@ -16,6 +16,17 @@ export default defineUserConfig({
       description: "这是我的博客",
     },
   },
+   // Add head option to include the Rybbit script on all pages
+  head: [
+    [
+      'script', 
+      {
+        src: 'https://app.rybbit.io/api/script.js',
+        'data-site-id': '493',
+        defer: true
+      }
+    ]
+  ],
   theme: plumeTheme({
     locales: {
       "/": {
