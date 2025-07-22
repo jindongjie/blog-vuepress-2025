@@ -2,7 +2,7 @@
 title: Theme Preview
 author: pengzhanbo
 createTime: 2023/12/25 01:28:29
-sticky: true
+sticky: false
 tags:
   - preview
   - tags
