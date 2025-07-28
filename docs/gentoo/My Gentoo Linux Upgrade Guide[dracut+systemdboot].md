@@ -4,6 +4,8 @@ tags:
   - upgrade
   - kernel
   - gentoolinux
+
+createTime: 2025/6/17 20:13:06
 ---
 ## My Gentoo Linux Upgrade Guide
 - This Guide include two part, part one is package update, second part is kernel upgrade.
@@ -12,15 +14,15 @@ tags:
 
 ## Part One Package Update
 ### sync with repository
-If you want to update all package for Gentoo Linux, first for all, you need sync all repository with upstream.
-there are two way to do this, first is fastest way --- download entire ebuild repository by using command
+1. If you want to update all package for Gentoo Linux, first for all, you need sync all repository with upstream.
+there are two way to do this, first is fastest way --- download entire ebuild repository by using command:
 ```bash
 emerge-webrsync
 ```
-this is the way i recommand, just like other Linux distrobution, fast and easy.
+This is the way i recommand, just like other Linux distrobution, fast and easy.
 
-Second, use old-school '--sync' subcommand to sync with repository per package, this will cost lots of time if you install lots of package on your machine,but you get more control to this process.
-here is section of offical doc for it:
+2. Use old-school '--sync' subcommand to sync with repository per package, this will cost lots of time if you install lots of package on your machine,but you get more control to this process.
+Here is section of offical doc for it:
    --sync Updates repositories, for which auto-sync, sync-type and sync-uri  attributes  are
               set in repos.conf. A list of repos or aliases can be specified, in which case they
               will  be updated regardless of their auto-sync attribute.  See portage(5) for more
@@ -33,23 +35,25 @@ emerge --sync
 
 ### update package
 After secusessful sync with repository, you able to update all packages!
-This is a long-long process if you don't have a super computer.So, with PC, i recommand to start update package before bedtime (zzz)
-This is the command i recommand
+This is a long-long process if you don't have a super computer.
+So, with PC, i recommand to start update package before bedtime (Zzz)
+This is the command i recommand:
 ```bash
 emworld  (alias emworld=doas emerge -avuDN @world)
 ```
 I use a alias shortcut for it, in columns, there is full command.
 And commad meaning:
-  1. -a :   --ask [ y | n ], -a
+  1. -a :  
               Before  performing  the  action, display what will take place (server info for --sync, --pretend output
               for merge, and so forth), then ask whether to proceed with the action or abort.  Using  --ask  is  more
               efficient  than  using --pretend and then executing the same command without --pretend, as dependencies
-              will only need to be calculated once. WARNING: If the "Enter" key is pressed at  the  prompt  (with  no
-              other  input),  it is interpreted as acceptance of the first choice.  Note that the input buffer is not
-              cleared prior to the prompt, so an accidental press of the "Enter" key at any time prior to the  prompt
-              will  be  interpreted as a choice!  Use the --ask-enter-invalid option if you want a single "Enter" key
-              press to be interpreted as invalid input.
-  2. -v: --verbose [ y | n ], -v
+              will only need to be calculated once. 
+              > [!warning]
+              >WARNING: If the "Enter" key is pressed at  the  prompt  (with  noother  input),  it is interpreted as acceptance of the first choice.
+              >
+              Note that the input buffer is not cleared prior to the prompt, so an accidental press of the "Enter" key at any time prior to the  prompt
+              will  be  interpreted as a choice!
+  2. -v:
               Tell emerge to run in verbose mode.  Currently this flag causes emerge to print out GNU info errors, if
               any, and to show the USE flags that will be used for each package when pretending. The  following  sym‐
               bols are affixed to USE flags in order to indicate their status:
@@ -62,7 +66,7 @@ And commad meaning:
               %        suffix      newly added or removed
               ()       circumfix   forced, masked, or removed
               {}       circumfix   state is bound to FEATURES settings
-  3. -u:  --update, -u
+  3. -u:  
               Updates packages to the best version available, which may not always be the highest version number  due
               to masking for testing and development. Package atoms specified on the command line are greedy, meaning
               that  unspecific  atoms  may match multiple versions of slotted packages.  This option also implies the
@@ -71,15 +75,15 @@ And commad meaning:
   4. @world: excute behavior with all packages.
 
 Run the command, and read the output by section.
-Fist section is ebuild caculation part, it will automatic compare old and new synced version of package, list out packages is new/update/reinstall/uninstall
+- Fist section is ebuild caculation part, it will automatic compare old and new synced version of package, list out packages gonna *new/update/reinstall/uninstall*
 ```bash
 [ebuild     U  ] sys-libs/glibc-2.41-r4:2.2::gentoo [2.40-r8:2.2::gentoo] USE="cet multiarch (multilib) ssp stack-realign (static-libs) -audit -caps -compile-locales (-custom-cflags) -doc -gd -hash-sysv-compat -headers-only -multilib-bootstrap -nscd -perl -profile (-selinux) -suid -systemd -systemtap -test (-vanilla)" 18,974 KiB
 [ebuild     U  ] sys-libs/ncurses-6.5_p20250329:0/6::gentoo [6.5_p20250125:0/6::gentoo] USE="cxx stack-realign (tinfo) -ada -debug -doc -gpm -minimal -profile (-split-usr) -static-libs -test -trace -verify-sig" ABI_X86="32 (64) (-x32)" 373 KiB
 ...
 ```
 
-Second section is conflict warning part
-```bash
+- Second section is conflict warning part
+```text
 
 WARNING: One or more updates/rebuilds have been skipped due to a dependency conflict:
 
@@ -98,8 +102,8 @@ dev-libs/boost:0
 
 Read it all and makesure nothing gona breake your system.
 
-Thrid part is rebuld list
-```bash
+- Final part is rebuild list
+```haskell
 The following packages are causing rebuilds:
 
   (net-libs/miniupnpc-2.3.3-r1:0/21::gentoo, ebuild scheduled for merge) causes rebuilds for:
@@ -111,18 +115,53 @@ The following packages are causing rebuilds:
     (dev-libs/re2-2024.07.02:0/11::gentoo, ebuild scheduled for merge)
 ```
 
-It simply list all package need rebulid for you to get a fuzzy concept about this update will take how much time.
+It simply list all package need rebulid for you to get a fuzzy thought  about how much time current update will take.
 
 If everything is OK, type "yes" to comfirm update!
-```bash
+```text
 Would you like to merge these packages? [Yes/No]
 ```
 
 
-Wait a little bit of time, make sure emerge is doing things correct,then have a good sleep! If anything goes wrong, it will skip it, if no major pacakge error, you can fix that easly.
+Wait a little bit of time, make sure emerge is doing things correct,then have a *good sleep!* If anything goes wrong, it will skip it, if no major error such as compiler or system level stuff, you can fix that easly, i may write more tutorial about those common error.
   
 
 ## Part Two Kernel upgrade
+I only install local compile kernel, this is safer and much customizable, make the OS more fast, flex and hacky.
+### check avaiable kernel version:
+```bash
+equery meta gentoo-sources
+```
+You will see a  list of all avaliable version of gentoo official kernel(source code version).
+
+### install kernel source code
+
+If you want to use stable kernel (above equery command text color for your architectrue is green), you can use this command to install:
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8
+```
+Or if you want to try newest, untested kernel, you can bravly choice version from masked stuff! ( above equery command text color four your architectrue is blue).
+And install using this set of command:
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8 --autounmask --autounmask-write
+dispatch-conf 
+```
+Let me expain, first "--autounmask.." afterfix is allow portage auto create a patch for portage configuraton for automatic unmask package you want to install.
+Then you can use_dispatch-conf_ to apply it:
+>info
+>dispatch-conf  is  designed  to be run after merging new packages in order to see if there are updates to the configuration
+       files.  If a new configuration file will overwrite an old one, dispatch-conf will prompt the user for a decision about  how
+       to  resolve  the discrepancy.  Advantages of dispatch-conf include easy rollback (changes to config files are stored either
+       using patches or rcs) and the ability to automatically update config files that the user has never modified or that  differ
+       from the current version only in CVS cruft or white space.
+
+When package is unmasked, you able to install by running above emerge command again:
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8
+```
+
+### config kernel
+
 
 
 
