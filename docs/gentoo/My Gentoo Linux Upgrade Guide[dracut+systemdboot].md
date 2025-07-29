@@ -161,6 +161,35 @@ emerge =sys-kernel/gentoo-sources-6.15.8
 ```
 
 ### config kernel
+First we should confirm kernel source code is exist and reconized for Gentoo Linux
+```bash
+/u/src ❯❯❯ eselect kernel list
+Available kernel symlink targets:
+  [1]   linux-6.1.127-gentoo
+  [2]   linux-6.1.129-gentoo
+  [3]   linux-6.1.132-gentoo
+  [4]   linux-6.12.1-gentoo
+  [5]   linux-6.14.3-gentoo
+  [6]   linux-6.15.0-gentoo *
+  [7]   linux-6.15.8-gentoo
+```
+You can see i am currently on 6.15.0 version(* symbol) and we gonna hand by hand upgrade to 6.15.8, with my customize configuration!
+So i gona select 6.15.8 kernel
+```bash
+eselect kernel set 7  
+````
+Then, Gentoo gona change the softlink of "/usr/src/linux" to the kernel source-code we select.
+Second, we able to config the kernel!
+Jump in to "/usr/src/linux"
+```bash
+cd /usr/src/linux
+```
+Then choice a good kernel configuration tool, i recommand nconfig, menuconfig is too old-school :)
+```bash
+make nconfig
+```
+Boom, you able to select what ever kernel function you want to use!
+You can read the offical linux kernel configuration manual by this link:
 
 
 
