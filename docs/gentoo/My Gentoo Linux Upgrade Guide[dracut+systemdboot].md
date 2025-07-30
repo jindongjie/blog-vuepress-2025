@@ -1,7 +1,5 @@
 ---
 tags:
-  - portage
-  - upgrade
   - kernel
   - gentoolinux
 
@@ -11,6 +9,9 @@ createTime: 2025/6/17 20:13:06
 - This Guide include two part, part one is package update, second part is kernel upgrade.
 - Part one is suit for any Gentoo Linux machine, but part two is customize version (We will customize kernel parameter and compile it by us manually!) is unfotanly need dracut for initramfs generate and systemboot for bootloader.If not, well, some command need to be chagne, but the general flow is same.
 - This is temperary for my PERSONAL REFRENCE ONLY, if you are newbee with Gentoo please read offical gentoo linux documentation first, this is for experianced user to refrence and optmize they update process.
+- Here is 2 offical guide you must read if you want to manage your Gentoo Linux:
+  1. [Portage Guide, about package management](https://wiki.gentoo.org/wiki/Portage)
+  2. [https://wiki.gentoo.org/wiki/Kernel, about kernel upgrade](https://wiki.gentoo.org/wiki/Kernel)
 
 ## Part One Package Update
 ### sync with repository
@@ -190,8 +191,43 @@ make nconfig
 ```
 Boom, you able to select what ever kernel function you want to use!
 You can read the offical linux kernel configuration manual by this link:
+[gentoo kernel configuration guide](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
 
+If you don't want to make any change, you can simply copy your old kernel config!
+for exsample as we saw above, i use linux-6.15 as previous kernel, so i need copy configuration form that old folder, just like this:
+```bash
+cp /usr/src/linux-6.15.0-gentoo/.config /usr/src/linux
+```
 
+### compile kernel
+Good, we need compile kernel! this will take a while...
+```bash
+make -j(nproc)
+```
+Or manual input count of your threads avaliable.
+```bash
+make -j(THREAD COUNT YOU WANT)
+```
 
+Don't forget install module! it is really easy to forget.
+```bash
+make modules_install
+```
 
-## End
+When kernel and all module is ready, it is time to install it. (it should auto trigger your bootloader or something to auto copy vmlinux and initramfs to your boot partition, if it can do that, recheck the install process about whatever your bootloader is)
+
+```bash
+make install
+```
+
+Fantastic! and finally if you using nvidia graphic card same as me, you should reinstall nvidia-drivers
+```bash
+emerge x11-drivers/nvidia-drivers 
+```
+Finally, we can reboot the  system, and check out your system is broke or not :)
+If someting go wrong, we also should use old backup kernel to diagnostic and fix the problem.
+
+##  End
+
+Yes, the end.
+
