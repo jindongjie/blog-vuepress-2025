@@ -6,7 +6,7 @@ export default defineThemeConfig({
     name: "jindongjie",
     avatar: "/logo/Lambda_logo.svg",
     circle: true,
-    location: "LongYan, China",
+    location: "Somewhere, China",
     description: "Keep.It.Simple.Stupid",
   },
   social: [
