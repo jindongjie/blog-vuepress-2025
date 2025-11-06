@@ -3,7 +3,7 @@ tags:
   - helix 
   - markdown
   - gentoolinux
-  
+date: 2025/03/12 94:00:00  
 permalink: /article/ITiSWAHTitISISS/
 ---
 

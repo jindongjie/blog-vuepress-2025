@@ -1,3 +1,11 @@
+---
+createTime: 2025/14/04
+sticky: false
+tags:
+  - Linux
+  - RAID
+  - Gentoo Linux
+---
 # Setting Up RAID 5 on Gentoo Linux with mdadm(AI WARNING)
 
 This guide explains how to configure a software RAID 5 array on Gentoo Linux using `mdadm`.

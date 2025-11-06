@@ -1,4 +1,11 @@
-
+---
+createTime: 1484/4/33 11:24:34
+sticky: false
+tags:
+  - ALSA
+  - Linux
+permalink: /zh/article/133dx7x9/
+---
 Recently, i found some unknown bug when i want to play music with rust library `rodio`.
 Music is playing smooth, but the error message print on screen will total screw [my project](https://github.com/jindongjie/Portal_StillAlive_Rust).
 ```bash

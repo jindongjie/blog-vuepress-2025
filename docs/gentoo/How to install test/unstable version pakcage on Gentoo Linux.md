@@ -1,3 +1,11 @@
+---
+createTime: 2025/04/25 01:28:34
+sticky: false
+tags:
+  - Firefox
+  - Linux
+  - Gentoo Linux
+---
 I want to install latest firefox becuase god damn twitch.tv requeried it, so i will demonstrate with firefox pakcage.
 ## Query package version
 I often use gentoo [package web page](https://packages.gentoo.org/packages/www-client/firefox) to confirm it.
