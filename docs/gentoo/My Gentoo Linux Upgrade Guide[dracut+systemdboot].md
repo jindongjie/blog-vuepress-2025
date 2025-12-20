@@ -7,22 +7,22 @@ createTime: 2025/6/17 20:13:06
 ---
 ## My Gentoo Linux Upgrade Guide
 - This Guide include two part, part one is package update, second part is kernel upgrade.
-- Part one is suit for any Gentoo Linux machine, but part two is customize version (We will customize kernel parameter and compile it by us manually!) is unfotanly need dracut for initramfs generate and systemboot for bootloader.If not, well, some command need to be chagne, but the general flow is same.
-- This is temperary for my PERSONAL REFRENCE ONLY, if you are newbee with Gentoo please read offical gentoo linux documentation first, this is for experianced user to refrence and optmize they update process.
+- Part one is suit for any Gentoo Linux computer, but part two is customized version (We able to customize kernel configuration and compile it manually!) is unfortunately need **dracut** for initramfs generate and **systemboot** for bootloader.If you choose other alernatives, some command need to be change, but the general flow is same.
+- This is temporary for my **PERSONAL REFRENCE ONLY**, if you are not familiar with Gentoo Linux, please read offical gentoo linux document first, this is for senior user to refrence and optmize they update flow.
 - Here is 2 offical guide you must read if you want to manage your Gentoo Linux:
   1. [Portage Guide, about package management](https://wiki.gentoo.org/wiki/Portage)
   2. [https://wiki.gentoo.org/wiki/Kernel, about kernel upgrade](https://wiki.gentoo.org/wiki/Kernel)
 
 ## Part One Package Update
 ### sync with repository
-1. If you want to update all package for Gentoo Linux, first for all, you need sync all repository with upstream.
-there are two way to do this, first is fastest way --- download entire ebuild repository by using command:
+1. If you want to update all package for Gentoo Linux, first for all, you need sync all repositorys with upstream.
+there are two way to do this, first is fastest way --- download the compressed package information index by:
 ```bash
 emerge-webrsync
 ```
-This is the way i recommand, just like other Linux distrobution, fast and easy.
+This is the most efficient way.
 
-2. Use old-school '--sync' subcommand to sync with repository per package, this will cost lots of time if you install lots of package on your machine,but you get more control to this process.
+2. Use old-school '--sync' command to sync with repository per package, this will cost lots of time if you install lots of package on your machine,but you get more control to this process.
 Here is section of offical doc for it:
    --sync Updates repositories, for which auto-sync, sync-type and sync-uri  attributes  are
               set in repos.conf. A list of repos or aliases can be specified, in which case they
@@ -35,15 +35,15 @@ emerge --sync
 ```
 
 ### update package
-After secusessful sync with repository, you able to update all packages!
+After sucessfull sync with repositorys, you able to update all packages!
 This is a long-long process if you don't have a super computer.
-So, with PC, i recommand to start update package before bedtime (Zzz)
+So, with PC, i recommand to start update package before bedtime (Zzz) and let it run over the night(hope it don't start burning LOL)
 This is the command i recommand:
 ```bash
-emworld  (alias emworld=doas emerge -avuDN @world)
+emworld  (alias emworld=emerge -avuDN @world)
 ```
 I use a alias shortcut for it, in columns, there is full command.
-And commad meaning:
+And command meaning:
   1. -a :  
               Before  performing  the  action, display what will take place (server info for --sync, --pretend output
               for merge, and so forth), then ask whether to proceed with the action or abort.  Using  --ask  is  more
@@ -101,7 +101,7 @@ dev-libs/boost:0
 
 ```
 
-Read it all and makesure nothing gona breake your system.
+Read it all and make sure nothing gona break your system(crucial package and they dependencies won't conflit).
 
 - Final part is rebuild list
 ```haskell
@@ -116,7 +116,7 @@ The following packages are causing rebuilds:
     (dev-libs/re2-2024.07.02:0/11::gentoo, ebuild scheduled for merge)
 ```
 
-It simply list all package need rebulid for you to get a fuzzy thought  about how much time current update will take.
+It simply listed all package need rebulid for you, to get a rough estimate about how much time it to execute.
 
 If everything is OK, type "yes" to comfirm update!
 ```text
@@ -124,7 +124,7 @@ Would you like to merge these packages? [Yes/No]
 ```
 
 
-Wait a little bit of time, make sure emerge is doing things correct,then have a *good sleep!* If anything goes wrong, it will skip it, if no major error such as compiler or system level stuff, you can fix that easly, i may write more tutorial about those common error.
+Wait a little bit of time, make sure emerge is doing things correct,then have a *good sleep!* If anything goes wrong, it will skip it, if no major error such as compiler or system level stuff, you can fix that easly.
   
 
 ## Part Two Kernel upgrade
@@ -133,7 +133,7 @@ I only install local compile kernel, this is safer and much customizable, make t
 ```bash
 equery meta gentoo-sources
 ```
-You will see a  list of all avaliable version of gentoo official kernel(source code version).
+You will see a list of all avaliable version of gentoo official kernel(source code version).
 
 ### install kernel source code
 
@@ -145,10 +145,12 @@ Or if you want to try newest, untested kernel, you can bravly choice version fro
 And install using this set of command:
 ```bash
 emerge =sys-kernel/gentoo-sources-6.15.8 --autounmask --autounmask-write
+```
+```bash
 dispatch-conf 
 ```
-Let me expain, first "--autounmask.." afterfix is allow portage auto create a patch for portage configuraton for automatic unmask package you want to install.
-Then you can use_dispatch-conf_ to apply it:
+Let me expain,first "--autounmask" allow portage auto create a patch for to automatic unmask package you want to install.
+Then you can use _dispatch-conf_ to apply the patch:
 >info
 >dispatch-conf  is  designed  to be run after merging new packages in order to see if there are updates to the configuration
        files.  If a new configuration file will overwrite an old one, dispatch-conf will prompt the user for a decision about  how
@@ -174,39 +176,53 @@ Available kernel symlink targets:
   [6]   linux-6.15.0-gentoo *
   [7]   linux-6.15.8-gentoo
 ```
-You can see i am currently on 6.15.0 version(* symbol) and we gonna hand by hand upgrade to 6.15.8, with my customize configuration!
-So i gona select 6.15.8 kernel
+You can see i am currently on 6.15.0 version(* symbol) and we gonna manually upgrade to 6.15.8, with my customize configuration!
+So i will select 6.15.8 kernel
 ```bash
 eselect kernel set 7  
 ````
-Then, Gentoo gona change the softlink of "/usr/src/linux" to the kernel source-code we select.
+Then, Gentoo will change the softlink of "/usr/src/linux" to the kernel source-code we select. 
 Second, we able to config the kernel!
-Jump in to "/usr/src/linux"
+Jump in to folder "/usr/src/linux"
 ```bash
 cd /usr/src/linux
 ```
-Then choice a good kernel configuration tool, i recommand nconfig, menuconfig is too old-school :)
-```bash
-make nconfig
-```
-Boom, you able to select what ever kernel function you want to use!
-You can read the offical linux kernel configuration manual by this link:
-[gentoo kernel configuration guide](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
-
+Fist you need a base config to start, you can just move the old kernel config here or use some script to generate.
+1. Copy from Your old configuration
 If you don't want to make any change, you can simply copy your old kernel config!
-for exsample as we saw above, i use linux-6.15 as previous kernel, so i need copy configuration form that old folder, just like this:
+for exsample, as we saw above, i use linux-6.15 as previous kernel, so i need copy configuration form that old folder, just like this:
 ```bash
 cp /usr/src/linux-6.15.0-gentoo/.config /usr/src/linux
 ```
+2. Generate by script
+If you just install the system or prefer to get a new configuration there is several script for this task.
+- **defconfig** Most recommand, just a basic config
+```bash
+make defconfig
+```
+- **tinyconfig** Use in embedded system, or some experimental test 
+```bash
+make tinyconfig
+```
+And we is finally getting to the stage we can tweak something.
+Choose a good kernel configuration tool, i recommand nconfig, or menuconfig is also fine.
+```bash
+make nconfig
+```
+Bingo, you able to select what ever kernel function you want to use!
+You can read the offical linux kernel configuration manual by this link:
+[gentoo kernel configuration guide](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
+
 
 ### compile kernel
 Good, we need compile kernel! this will take a while...
+Use all of your computing power:
 ```bash
 make -j(nproc)
 ```
 Or manual input count of your threads avaliable.
 ```bash
-make -j(THREAD COUNT YOU WANT)
+make -j(HOW MANY THREADS YOU WANT TO USE, EVALUATE WITH MEMORY like 1 thread consume 200MB memory)
 ```
 
 Don't forget install module! it is really easy to forget.
