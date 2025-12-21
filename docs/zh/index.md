@@ -22,7 +22,7 @@ config:
 
 <h2 style="text-align: center;margin: 32px 0 32px">推荐的博客</h2>
 
-<a ref="https://liuyandong.com">栋哥赛博空间></a>
+<a href="https://liuyandong.com">栋哥赛博空间</a>
 <h2 style="text-align: center;margin: 32px 0 32px">个人项目</h2>
 
 <CardGrid>

@@ -22,7 +22,7 @@ config:
 
 <h2 style="text-align: center;margin: 32px 0 32px">Recommand Blog</h2>
 
-<a ref="https://liuyandong.com">Blog by liuyandong></a>
+<a href="https://liuyandong.com">Blog by liuyandong</a>
 
 
 <h2 style="text-align: center;margin: 32px 0 32px">My Projects</h2>
