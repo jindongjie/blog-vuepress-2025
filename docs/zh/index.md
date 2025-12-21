@@ -3,7 +3,7 @@ home: true
 title: 首页
 config:
   - type: banner
-    banner: /images/leafs-autum-sunshine.jpg
+    banner: /images/aperture.png
     bannerMask:
       light: 0.1
       dark: 0.3

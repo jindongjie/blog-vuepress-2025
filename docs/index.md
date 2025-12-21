@@ -3,7 +3,7 @@ home: true
 title: Home
 config:
   - type: banner
-    banner: /images/leafs-autum-sunshine.jpg
+    banner: /images/aperture.png
     bannerMask:
       light: 0.1
       dark: 0.3
