@@ -37,8 +37,8 @@ emerge --sync
 ### update package
 After sucessfull sync with repositorys, you able to update all packages!
 This is a long-long process if you don't have a super computer.
-So, with PC, i recommand to start update package before bedtime (Zzz) and let it run over the night(hope it don't start burning LOL)
-This is the command i recommand:
+So, with PC, i recommend to start update package before bedtime (Zzz) and let it run over the night(hope it don't start burning LOL)
+This is the command i recommend:
 ```bash
 emworld  (alias emworld=emerge -avuDN @world)
 ```
@@ -196,7 +196,7 @@ cp /usr/src/linux-6.15.0-gentoo/.config /usr/src/linux
 ```
 2. Generate by script
 If you just install the system or prefer to get a new configuration there is several script for this task.
-- **defconfig** Most recommand, just a basic config
+- **defconfig** Most recommend, just a basic config
 ```bash
 make defconfig
 ```
@@ -205,7 +205,7 @@ make defconfig
 make tinyconfig
 ```
 And we is finally getting to the stage we can tweak something.
-Choose a good kernel configuration tool, i recommand nconfig, or menuconfig is also fine.
+Choose a good kernel configuration tool, i recommend nconfig, or menuconfig is also fine.
 ```bash
 make nconfig
 ```
