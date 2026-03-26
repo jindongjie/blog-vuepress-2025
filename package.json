@@ -14,14 +14,14 @@
     "@vuepress/bundler-vite": "2.0.0-rc.19",
     "@vuepress/plugin-blog": "2.0.0-rc.74",
     "@vuepress/theme-default": "2.0.0-rc.74",
-    "sass": "^1.84.0",
-    "vue": "^3.5.13",
+    "sass": "^1.98.0",
+    "vue": "^3.5.31",
     "vuepress": "2.0.0-rc.19",
     "vuepress-theme-plume": "1.0.0-rc.130"
   },
   "packageManager": "pnpm@10.2.1",
   "dependencies": {
-    "@iconify/json": "^2.2.304",
-    "twikoo": "^1.6.41"
+    "@iconify/json": "^2.2.455",
+    "twikoo": "^1.7.4"
   }
 }
