@@ -3,7 +3,6 @@ tags:
   - kernel
   - gentoolinux
 
-createTime: 2025/6/17 20:13:06
 ---
 ## My Gentoo Linux Upgrade Guide
 - This Guide include two part, part one is package update, second part is kernel upgrade.
@@ -129,7 +128,7 @@ Wait a little bit of time, make sure emerge is doing things correct,then have a 
 
 ## Part Two Kernel upgrade
 I only install local compile kernel, this is safer and much customizable, make the OS more fast, flex and hacky.
-### check avaiable kernel version:
+### check avaliable kernel version:
 ```bash
 equery meta gentoo-sources
 ```
@@ -203,6 +202,18 @@ make defconfig
 - **tinyconfig** Use in embedded system, or some experimental test 
 ```bash
 make tinyconfig
+```
+
+3. Migrate old config to new kernel
+If you use old configuration and don't what to deside all new kernel configuration manually,you should use this command
+```bash
+make olddefconfig
+```
+
+4. chose driver configuration base on current hardware
+If you want to let kernel auto deside what driver configuration should be enable or disable, you should use this command
+```bash
+make localmodeconfig
 ```
 And we is finally getting to the stage we can tweak something.
 Choose a good kernel configuration tool, i recommend nconfig, or menuconfig is also fine.
