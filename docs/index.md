@@ -20,11 +20,6 @@ config:
   - type: custom
 ---
 
-<h2 style="text-align: center;margin: 32px 0 32px">Recommand Blog</h2>
-
-<a href="https://liuyandong.com">Blog by liuyandong</a>
-
-
 <h2 style="text-align: center;margin: 32px 0 32px">My Projects</h2>
 
 <CardGrid>

@@ -59,6 +59,11 @@ export default defineUserConfig({
             link: "/blog/archives/",
             icon: "solar:inbox-archive-linear",
           },
+          {
+            text: "Friends",
+            link: "/friends/",
+            icon: "solar:users-group-rounded-linear",
+          },
         ],
         selectLanguageName: "English",
       },
@@ -95,6 +100,11 @@ export default defineUserConfig({
             text: "归档",
             link: "/zh/blog/archives/",
             icon: "solar:inbox-archive-linear",
+          },
+          {
+            text: "友链",
+            link: "/zh/friends/",
+            icon: "solar:users-group-rounded-linear",
           },
         ],
         selectLanguageName: "简体中文",

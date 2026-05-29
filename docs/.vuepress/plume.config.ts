@@ -32,7 +32,24 @@ viewBox="0 0 520 520" style="enable-background:new 0 0 520 520;" xml:space="pres
   ],
   navbarSocialInclude: ["github", "matrix"],
 
-  // editLinkText: "在 GitHub 上编辑此页",
+  locales: {
+    "/": {
+      // English locale
+      footer: { copyright: "Copyright © 2025-2026 jindongjie" },
+    },
+    "/zh/": {
+      // Chinese locale
+      profile: {
+        name: "jindongjie",
+        avatar: "/logo/Lambda_logo.svg",
+        circle: true,
+        location: "中国福建龙岩",
+        description: "保持简单，傻傻的最好",
+      },
+      footer: { copyright: "版权所有 © 2025-2026 jindongjie" },
+    },
+  },
+
   footer: { copyright: "Copyright © 2025-2026 jindongjie" },
   externalLinkIcon: true,
 });
