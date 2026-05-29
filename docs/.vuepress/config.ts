@@ -30,27 +30,49 @@ export default defineUserConfig({
   theme: plumeTheme({
     locales: {
       "/": {
+        collections: [
+          {
+            type: "post",
+            title: "Blog",
+            dir: "gentoo",
+            link: "/article/",
+            linkPrefix: "/article/",
+            autoFrontmatter: false,
+          },
+        ],
         navbar: [
           { text: "Home", link: "/", icon: "material-symbols:home-app-logo" },
           {
             text: "Blog",
-            link: "/blog/",
+            link: "/article/",
             icon: "solar:documents-linear",
           },
           {
             text: "Tags",
-            link: "/blog/tags/",
+            link: "/article/tags/",
             icon: "solar:tag-linear",
           },
           {
             text: "Archives",
-            link: "/blog/archives/",
+            link: "/article/archives/",
             icon: "solar:inbox-archive-linear",
           },
         ],
         selectLanguageName: "English",
       },
       "/zh/": {
+        collections: [
+          {
+            type: "post",
+            title: "博客",
+            dir: "zh",
+            link: "/article/",
+            linkPrefix: "/article/",
+            include: ["**/*.md"],
+            exclude: ["index.md"],
+            autoFrontmatter: false,
+          },
+        ],
         navbar: [
           {
             text: "主页",
@@ -59,17 +81,17 @@ export default defineUserConfig({
           },
           {
             text: "博客",
-            link: "/zh/blog/",
+            link: "/zh/article/",
             icon: "solar:documents-linear",
           },
           {
             text: "标签",
-            link: "/zh/blog/tags/",
+            link: "/zh/article/tags/",
             icon: "solar:tag-linear",
           },
           {
             text: "归档",
-            link: "/zh/blog/archives/",
+            link: "/zh/article/archives/",
             icon: "solar:inbox-archive-linear",
           },
         ],
