@@ -6,7 +6,7 @@ export default defineThemeConfig({
     name: "jindongjie",
     avatar: "/logo/Lambda_logo.svg",
     circle: true,
-    location: "Somewhere, China",
+    location: "Longyan Fujian, China",
     description: "Keep.It.Simple.Stupid",
   },
   social: [
@@ -33,6 +33,6 @@ viewBox="0 0 520 520" style="enable-background:new 0 0 520 520;" xml:space="pres
   navbarSocialInclude: ["github", "matrix"],
 
   // editLinkText: "在 GitHub 上编辑此页",
-  footer: { copyright: "Copyright © 2023-2025 jindongjie" },
+  footer: { copyright: "Copyright © 2025-2026 jindongjie" },
   externalLinkIcon: true,
 });

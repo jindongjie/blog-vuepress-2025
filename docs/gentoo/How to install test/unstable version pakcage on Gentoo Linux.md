@@ -5,6 +5,8 @@ tags:
   - Firefox
   - Linux
   - Gentoo Linux
+title: unstable version pakcage on Gentoo Linux
+permalink: /article/y4mkfv0j/
 ---
 I want to install latest firefox becuase god damn twitch.tv requeried it, so i will demonstrate with firefox pakcage.
 ## Query package version

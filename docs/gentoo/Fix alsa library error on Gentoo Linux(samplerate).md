@@ -4,6 +4,8 @@ tags:
   - ALSA
   - Linux
 permalink: /zh/article/133dx7x9/
+title: Fix alsa library error on Gentoo Linux(samplerate)
+createTime: 2026/03/26 20:08:48
 ---
 Recently, i found some unknown bug when i want to play music with rust library `rodio`.
 Music is playing smooth, but the error message print on screen will total screw [my project](https://github.com/jindongjie/Portal_StillAlive_Rust).

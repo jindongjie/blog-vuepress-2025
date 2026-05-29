@@ -1,10 +1,12 @@
 ---
 tags:
-  - helix 
+  - helix
   - markdown
   - gentoolinux
-date: 2025/03/12 94:00:00  
+date: 2025/03/12 94:00:00
 permalink: /article/ITiSWAHTitISISS/
+title: Get full Markdown support in helix (With Gentoo Linux)
+createTime: 2025/11/06 22:01:32
 ---
 
 ## Two Dependencies, That's it

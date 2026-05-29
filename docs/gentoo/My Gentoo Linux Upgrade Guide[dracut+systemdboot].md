@@ -2,7 +2,9 @@
 tags:
   - kernel
   - gentoolinux
-
+title: My Gentoo Linux Upgrade Guide[dracut+systemdboot]
+createTime: 2026/03/26 20:12:23
+permalink: /article/i2irrwhv/
 ---
 ## My Gentoo Linux Upgrade Guide
 - This Guide include two part, part one is package update, second part is kernel upgrade.

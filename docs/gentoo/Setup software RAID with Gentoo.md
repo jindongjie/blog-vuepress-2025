@@ -5,6 +5,8 @@ tags:
   - Linux
   - RAID
   - Gentoo Linux
+title: Setup software RAID with Gentoo
+permalink: /article/4mkdt44h/
 ---
 # Setting Up RAID 5 on Gentoo Linux with mdadm(AI WARNING)
 
