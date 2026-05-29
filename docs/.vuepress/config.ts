@@ -48,6 +48,13 @@ export default defineUserConfig({
             icon: "solar:inbox-archive-linear",
           },
         ],
+        collections: [
+          {
+            type: "post",
+            dir: "/",
+            link: "/blog/",
+          },
+        ],
         selectLanguageName: "English",
       },
       "/zh/": {
@@ -71,6 +78,13 @@ export default defineUserConfig({
             text: "归档",
             link: "/zh/blog/archives/",
             icon: "solar:inbox-archive-linear",
+          },
+        ],
+        collections: [
+          {
+            type: "post",
+            dir: "/",
+            link: "/blog/",
           },
         ],
         selectLanguageName: "简体中文",
