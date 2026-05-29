@@ -34,9 +34,11 @@ export default defineUserConfig({
           {
             type: "post",
             title: "Blog",
-            dir: "gentoo",
+            dir: ".",
             link: "/article/",
             linkPrefix: "/article/",
+            include: ["gentoo/**/*.md", "test posts/**/*.md"],
+            exclude: ["index.md"],
             autoFrontmatter: false,
           },
         ],
