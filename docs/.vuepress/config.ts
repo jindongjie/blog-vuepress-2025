@@ -38,7 +38,7 @@ export default defineUserConfig({
             link: "/blog/",
             linkPrefix: "/blog/",
             include: ["**/*.md"],
-            exclude: ["index.md", "zh/*.md", "zh/**/*.md"],
+            exclude: ["index.md","friends.md","zh/*.md", "zh/**/*.md"],
             autoFrontmatter: true,
           },
         ],
