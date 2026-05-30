@@ -24,8 +24,9 @@ config:
 
 <CardGrid>
   <RepoCard repo="jindongjie/SoftwareCopyrightSourceCodeCollector" />
-  <RepoCard repo="jindongjie/blog-vuepress-2025" />
+  <RepoCard repo="jindongjie/modbus-toolbox" />
   <RepoCard repo="jindongjie/Portal_StillAlive_Rust" />
+  <RepoCard repo="jindongjie/circuitjs1" />
 </CardGrid>
 
 <h2 style="text-align: center;margin: 32px 0 32px">Involved Projects</h2>

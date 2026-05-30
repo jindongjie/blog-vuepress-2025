@@ -26,8 +26,9 @@ createTime: 2026/05/30 02:10:24
 
 <CardGrid>
   <RepoCard repo="jindongjie/SoftwareCopyrightSourceCodeCollector" />
-  <RepoCard repo="jindongjie/blog-vuepress-2025" />
+  <RepoCard repo="jindongjie/modbus-toolbox" />
   <RepoCard repo="jindongjie/Portal_StillAlive_Rust" />
+  <RepoCard repo="jindongjie/circuitjs1" />
 </CardGrid>
 
 <h2 style="text-align: center;margin: 32px 0 32px">参与的项目</h2>
