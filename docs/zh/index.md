@@ -18,6 +18,8 @@ config:
           link: https://github.com/jindongjie
           theme: alt
   - type: custom
+permalink: /zh/
+createTime: 2026/05/30 02:10:24
 ---
 
 <h2 style="text-align: center;margin: 32px 0 32px">个人项目</h2>
