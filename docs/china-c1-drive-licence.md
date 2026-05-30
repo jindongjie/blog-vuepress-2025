@@ -7,11 +7,11 @@ tags:
   - real-world-things
 ---
 
-# openMAIC 课堂链接
+# China C1 Driving License Test Short Guide
+
+## openMAIC 课堂链接
 
 [课堂链接](https://open.maic.chat/classroom/vbN8b1vjFg)
-
-# China C1 Driving License Test Short Guide
 
 ## 1. Overview
 

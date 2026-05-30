@@ -7,11 +7,15 @@ tags:
   - 生活事务
 ---
 
-# openMAIC 课堂链接
-
-(课堂链接)[https://open.maic.chat/classroom/vbN8b1vjFg]
-
 # 中国驾照（C1）考试简明指南
+
+## openMAIC 课堂链接
+
+[课堂链接](https://open.maic.chat/classroom/sQr9lEAU3U)
+
+## 补充
+
+不要被教练坑了，学时千万不要混着打，他在科目二把你科目三学时打完了，你科目三就别想多练。
 
 ## 1. 科目概述
 

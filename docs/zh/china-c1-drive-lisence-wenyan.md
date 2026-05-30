@@ -7,11 +7,11 @@ tags:
   - 生活事务
 ---
 
-# openMAIC 课堂链接
-
-(课堂链接)[https://open.maic.chat/classroom/vbN8b1vjFg]
-
 # 华夏驭车执照（C1）试科略述
+
+## openMAIC 课堂链接
+
+[课堂链接](https://open.maic.chat/classroom/IBOfts6BEA)
 
 ## 1. 科目总论
 
