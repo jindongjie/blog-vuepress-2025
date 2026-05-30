@@ -8,7 +8,7 @@ list:
     avatar: https://github.com/jindongjie.png
     location: 中国福建龙岩
     organization: 开源社区
-    desc: 保持简单，保持愚蠢
+    desc: 保持简单，傻傻的最好
     socials:
       - icon: github
         link: https://github.com/jindongjie
