@@ -39,7 +39,7 @@ export default defineUserConfig({
             linkPrefix: "/blog/",
             include: ["**/*.md"],
             exclude: ["index.md", "zh/*.md", "zh/**/*.md"],
-            autoFrontmatter: false,
+            autoFrontmatter: true,
           },
         ],
         navbar: [
@@ -77,7 +77,7 @@ export default defineUserConfig({
             linkPrefix: "/zh/blog/",
             include: ["**/*.md"],
             exclude: ["index.md"],
-            autoFrontmatter: false,
+            autoFrontmatter: true,
           },
         ],
         navbar: [
