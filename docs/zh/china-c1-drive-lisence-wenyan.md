@@ -11,7 +11,7 @@ tags:
 
 ## openMAIC 课堂链接
 
-[课堂链接](https://open.maic.chat/classroom/IBOfts6BEA)
+[课堂链接](https://open.maic.chat/classroom/VLWm5aWtvh)
 
 ## 1. 科目总论
 
