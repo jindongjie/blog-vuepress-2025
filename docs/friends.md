@@ -20,4 +20,5 @@ list:
     avatar: https://github.com/liuyandong.png
     location: China
     desc: Blog by liuyandong
+permalink: /article/d3yu9vrn/
 ---

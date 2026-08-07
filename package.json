@@ -13,6 +13,7 @@
   "devDependencies": {
     "@vuepress/bundler-vite": "2.0.0-rc.30",
     "@vuepress/plugin-blog": "2.0.0-rc.130",
+    "@vuepress/plugin-llms": "^2.0.0-rc.130",
     "@vuepress/theme-default": "2.0.0-rc.130",
     "sass": "^1.100.0",
     "typescript": "^6.0.3",

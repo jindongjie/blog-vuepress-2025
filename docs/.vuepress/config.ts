@@ -1,6 +1,7 @@
 import { defineUserConfig } from "vuepress";
 import { plumeTheme } from "vuepress-theme-plume";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { llmsPlugin } from '@vuepress/plugin-llms'
 
 export default defineUserConfig({
   lang: "en-US",
@@ -109,6 +110,10 @@ export default defineUserConfig({
         ],
         selectLanguageName: "简体中文",
       },
+    },
+     llmstxt: {
+      locale: '/',
+      // ...其它配置
     },
     plugins: {
       shiki: {
