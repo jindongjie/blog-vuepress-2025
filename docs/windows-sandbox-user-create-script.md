@@ -1,4 +1,10 @@
-# Windows Isolated Sandbox Account Generator
+---
+title: Windows Isolated Sandbox Account Generate Script
+tags:
+  - Windows
+  - Security
+---
+# Windows Isolated Sandbox Account Generate Script
 
 A lightweight PowerShell automation script designed to create an isolated local Windows standard user with customized directory and drive access controls. It streamlines security containment while bypassing all tedious first-logon setup screens.
 
