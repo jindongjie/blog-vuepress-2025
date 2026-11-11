@@ -1,0 +1,1330 @@
+---
+url: /index.md
+---
+# Home
+
+---
+
+---
+url: /article/4mkdt44h/index.md
+---
+# Setting Up RAID 5 on Gentoo Linux with mdadm(AI WARNING)
+
+This guide explains how to configure a software RAID 5 array on Gentoo Linux using `mdadm`.
+
+***
+
+## 1. Install mdadm
+
+```bash
+emerge --ask sys-fs/mdadm
+```
+
+***
+
+## 2. Prepare Your Disks
+
+Identify the drives, e.g., `/dev/sdb`, `/dev/sdc`, `/dev/sdd`.
+
+**(Optional but recommended)** Clear old RAID superblocks:
+
+```bash
+mdadm --zero-superblock /dev/sdb /dev/sdc /dev/sdd
+```
+
+Partition each disk (recommended; use `fdisk`, `gdisk`, or `parted`). Mark partitions as type `fd` (Linux RAID autodetect) if using `fdisk`.
+
+***
+
+## 3. Create the RAID 5 Array
+
+Example with 3 disks/partitions:
+
+```bash
+mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/sdb1 /dev/sdc1 /dev/sdd1
+```
+
+* `--level=5`: RAID 5
+* `--raid-devices=3`: Number of drives (min 3)
+* Replace `/dev/sdX1` with your actual partition names.
+
+***
+
+## 4. Monitor Array Creation
+
+Check progress:
+
+```bash
+watch cat /proc/mdstat
+```
+
+Wait for the sync to complete before storing important data.
+
+***
+
+## 5. Create a Filesystem
+
+Example for ext4:
+
+```bash
+mkfs.ext4 /dev/md0
+```
+
+***
+
+## 6. Mount the Array
+
+```bash
+mkdir /mnt/raid
+mount /dev/md0 /mnt/raid
+```
+
+***
+
+## 7. Configure Array Auto-Assembly at Boot
+
+### a. Save array details:
+
+```bash
+mdadm --detail --scan >> /etc/mdadm.conf
+```
+
+### b. Enable mdadm at boot
+
+#### OpenRC (Gentoo default):
+
+```bash
+rc-update add mdadm boot
+```
+
+#### Systemd (if in use):
+
+```bash
+systemctl enable mdadm
+```
+
+### c. Add to `/etc/fstab` for automatic mounting:
+
+```
+/dev/md0    /mnt/raid    ext4    defaults    0 0
+```
+
+***
+
+## 8. Verify Everything
+
+```bash
+cat /proc/mdstat
+mdadm --detail /dev/md0
+```
+
+***
+
+## References
+
+* [Gentoo Wiki: RAID](https://wiki.gentoo.org/wiki/RAID)
+* [Gentoo Wiki: mdadm](https://wiki.gentoo.org/wiki/Mdadm)
+* [mdadm man page](https://man7.org/linux/man-pages/man8/mdadm.8.html)
+
+---
+
+---
+url: /article/i2irrwhv/index.md
+---
+# My Gentoo Linux Upgrade Guide[dracut+systemdboot]
+## My Gentoo Linux Upgrade Guide
+
+* This Guide include two part, part one is package update, second part is kernel upgrade.
+* Part one is suit for any Gentoo Linux computer, but part two is customized version (We able to customize kernel configuration and compile it manually!) is unfortunately need **dracut** for initramfs generate and **systemboot** for bootloader.If you choose other alernatives, some command need to be change, but the general flow is same.
+* This is temporary for my **PERSONAL REFRENCE ONLY**, if you are not familiar with Gentoo Linux, please read offical gentoo linux document first, this is for senior user to refrence and optmize they update flow.
+* Here is 2 offical guide you must read if you want to manage your Gentoo Linux:
+  1. [Portage Guide, about package management](https://wiki.gentoo.org/wiki/Portage)
+  2. [https://wiki.gentoo.org/wiki/Kernel, about kernel upgrade](https://wiki.gentoo.org/wiki/Kernel)
+
+## Part One Package Update
+
+### sync with repository
+
+1. If you want to update all package for Gentoo Linux, first for all, you need sync all repositorys with upstream.
+   there are two way to do this, first is fastest way --- download the compressed package information index by:
+
+```bash
+emerge-webrsync
+```
+
+This is the most efficient way.
+
+2. Use old-school '--sync' command to sync with repository per package, this will cost lots of time if you install lots of package on your machine,but you get more control to this process.
+   Here is section of offical doc for it:
+   \--sync Updates repositories, for which auto-sync, sync-type and sync-uri  attributes  are
+   set in repos.conf. A list of repos or aliases can be specified, in which case they
+   will  be updated regardless of their auto-sync attribute.  See portage(5) for more
+   information.  The PORTAGE\_SYNC\_STALE variable configures warnings that  are  shown
+   when emerge --sync has not been executed recently.
+
+```bash
+emerge --sync
+```
+
+### update package
+
+After sucessfull sync with repositorys, you able to update all packages!
+This is a long-long process if you don't have a super computer.
+So, with PC, i recommend to start update package before bedtime (Zzz) and let it run over the night(hope it don't start burning LOL)
+This is the command i recommend:
+
+```bash
+emworld  (alias emworld=emerge -avuDN @world)
+```
+
+I use a alias shortcut for it, in columns, there is full command.
+And command meaning:
+
+1. -a :\
+   Before  performing  the  action, display what will take place (server info for --sync, --pretend output
+   for merge, and so forth), then ask whether to proceed with the action or abort.  Using  --ask  is  more
+   efficient  than  using --pretend and then executing the same command without --pretend, as dependencies
+   will only need to be calculated once.
+   \> \[!warning]
+   \>WARNING: If the "Enter" key is pressed at  the  prompt  (with  noother  input),  it is interpreted as acceptance of the first choice.
+   \>
+   Note that the input buffer is not cleared prior to the prompt, so an accidental press of the "Enter" key at any time prior to the  prompt
+   will  be  interpreted as a choice!
+
+2. -v:
+   Tell emerge to run in verbose mode.  Currently this flag causes emerge to print out GNU info errors, if
+   any, and to show the USE flags that will be used for each package when pretending. The  following  sym‐
+   bols are affixed to USE flags in order to indicate their status:
+
+   ```
+        Symbol   Location    Meaning
+        ──────────────────────────────────────────────────────────────
+
+        -        prefix      not enabled (either disabled or removed)
+        *        suffix      transition to or from the enabled state
+        %        suffix      newly added or removed
+        ()       circumfix   forced, masked, or removed
+        {}       circumfix   state is bound to FEATURES settings
+   ```
+
+3. -u:\
+   Updates packages to the best version available, which may not always be the highest version number  due
+   to masking for testing and development. Package atoms specified on the command line are greedy, meaning
+   that  unspecific  atoms  may match multiple versions of slotted packages.  This option also implies the
+   \--selective option.
+
+4. @world: excute behavior with all packages.
+
+Run the command, and read the output by section.
+
+* Fist section is ebuild caculation part, it will automatic compare old and new synced version of package, list out packages gonna *new/update/reinstall/uninstall*
+
+```bash
+[ebuild     U  ] sys-libs/glibc-2.41-r4:2.2::gentoo [2.40-r8:2.2::gentoo] USE="cet multiarch (multilib) ssp stack-realign (static-libs) -audit -caps -compile-locales (-custom-cflags) -doc -gd -hash-sysv-compat -headers-only -multilib-bootstrap -nscd -perl -profile (-selinux) -suid -systemd -systemtap -test (-vanilla)" 18,974 KiB
+[ebuild     U  ] sys-libs/ncurses-6.5_p20250329:0/6::gentoo [6.5_p20250125:0/6::gentoo] USE="cxx stack-realign (tinfo) -ada -debug -doc -gpm -minimal -profile (-split-usr) -static-libs -test -trace -verify-sig" ABI_X86="32 (64) (-x32)" 373 KiB
+...
+```
+
+* Second section is conflict warning part
+
+```text
+
+WARNING: One or more updates/rebuilds have been skipped due to a dependency conflict:
+
+dev-libs/icu:0
+
+  (dev-libs/icu-77.1:0/77::gentoo, ebuild scheduled for merge) USE="-debug -doc -examples -static-libs -test -verify-sig" ABI_X86="32 (64) (-x32)" conflicts with
+    dev-libs/icu:0/76=[abi_x86_64(-)] required by (dev-libs/boost-1.85.0-r1:0/1.85.0.1::gentoo, installed) USE="bzip2 context icu nls stacktrace zlib -debug -doc -lzma -mpi -numpy -python -tools -zstd" ABI_X86="(64) -32 (-x32)" PYTHON_TARGETS="python3_12 -python3_10 -python3_11 -python3_13"
+                ^^^^^^               
+
+dev-libs/boost:0
+
+  (dev-libs/boost-1.88.0-r1:0/1.88.0::gentoo, ebuild scheduled for merge) USE="bzip2 context icu nls stacktrace zlib -debug -doc -lzma -mpi -numpy -python -test -test-full -tools -zstd" ABI_X86="(64) -32 (-x32)" PYTHON_TARGETS="python3_13 -python3_11 -python3_12" conflicts with
+    <dev-libs/boost-1.87:=[nls] required by (net-p2p/monero-0.18.3.4-r1:0/0::guru, ebuild scheduled for merge) USE="daemon readline tools wallet-cli wallet-rpc -hw-wallet" ABI_X86="(64)"
+
+```
+
+Read it all and make sure nothing gona break your system(crucial package and they dependencies won't conflit).
+
+* Final part is rebuild list
+
+```haskell
+The following packages are causing rebuilds:
+
+  (net-libs/miniupnpc-2.3.3-r1:0/21::gentoo, ebuild scheduled for merge) causes rebuilds for:
+    (net-p2p/monero-0.18.3.4-r1:0/0::guru, ebuild scheduled for merge)
+  (dev-cpp/abseil-cpp-20250127.1:0/2501.1.0::gentoo, ebuild scheduled for merge) causes rebuilds for:
+    (media-libs/webrtc-audio-processing-1.3-r3:1/1::gentoo, ebuild scheduled for merge)
+    (dev-libs/protobuf-30.2:0/30.2.0::gentoo, ebuild scheduled for merge)
+    (dev-util/android-tools-35.0.2:0/0::gentoo, ebuild scheduled for merge)
+    (dev-libs/re2-2024.07.02:0/11::gentoo, ebuild scheduled for merge)
+```
+
+It simply listed all package need rebulid for you, to get a rough estimate about how much time it to execute.
+
+If everything is OK, type "yes" to comfirm update!
+
+```text
+Would you like to merge these packages? [Yes/No]
+```
+
+Wait a little bit of time, make sure emerge is doing things correct,then have a *good sleep!* If anything goes wrong, it will skip it, if no major error such as compiler or system level stuff, you can fix that easly.
+
+## Part Two Kernel upgrade
+
+I only install local compile kernel, this is safer and much customizable, make the OS more fast, flex and hacky.
+
+### check avaliable kernel version:
+
+```bash
+equery meta gentoo-sources
+```
+
+You will see a list of all avaliable version of gentoo official kernel(source code version).
+
+### install kernel source code
+
+If you want to use stable kernel (above equery command text color for your architectrue is green), you can use this command to install:
+
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8
+```
+
+Or if you want to try newest, untested kernel, you can bravly choice version from masked stuff! ( above equery command text color four your architectrue is blue).
+And install using this set of command:
+
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8 --autounmask --autounmask-write
+```
+
+```bash
+dispatch-conf 
+```
+
+Let me expain,first "--autounmask" allow portage auto create a patch for to automatic unmask package you want to install.
+Then you can use *dispatch-conf* to apply the patch:
+
+> info
+> dispatch-conf  is  designed  to be run after merging new packages in order to see if there are updates to the configuration
+> files.  If a new configuration file will overwrite an old one, dispatch-conf will prompt the user for a decision about  how
+> to  resolve  the discrepancy.  Advantages of dispatch-conf include easy rollback (changes to config files are stored either
+> using patches or rcs) and the ability to automatically update config files that the user has never modified or that  differ
+> from the current version only in CVS cruft or white space.
+
+When package is unmasked, you able to install by running above emerge command again:
+
+```bash
+emerge =sys-kernel/gentoo-sources-6.15.8
+```
+
+### config kernel
+
+First we should confirm kernel source code is exist and reconized for Gentoo Linux
+
+```bash
+/u/src ❯❯❯ eselect kernel list
+Available kernel symlink targets:
+  [1]   linux-6.1.127-gentoo
+  [2]   linux-6.1.129-gentoo
+  [3]   linux-6.1.132-gentoo
+  [4]   linux-6.12.1-gentoo
+  [5]   linux-6.14.3-gentoo
+  [6]   linux-6.15.0-gentoo *
+  [7]   linux-6.15.8-gentoo
+```
+
+You can see i am currently on 6.15.0 version(\* symbol) and we gonna manually upgrade to 6.15.8, with my customize configuration!
+So i will select 6.15.8 kernel
+
+```bash
+eselect kernel set 7  
+```
+
+Then, Gentoo will change the softlink of "/usr/src/linux" to the kernel source-code we select.
+Second, we able to config the kernel!
+Jump in to folder "/usr/src/linux"
+
+```bash
+cd /usr/src/linux
+```
+
+Fist you need a base config to start, you can just move the old kernel config here or use some script to generate.
+
+1. Copy from Your old configuration
+   If you don't want to make any change, you can simply copy your old kernel config!
+   for exsample, as we saw above, i use linux-6.15 as previous kernel, so i need copy configuration form that old folder, just like this:
+
+```bash
+cp /usr/src/linux-6.15.0-gentoo/.config /usr/src/linux
+```
+
+2. Generate by script
+   If you just install the system or prefer to get a new configuration there is several script for this task.
+
+* **defconfig** Most recommend, just a basic config
+
+```bash
+make defconfig
+```
+
+* **tinyconfig** Use in embedded system, or some experimental test
+
+```bash
+make tinyconfig
+```
+
+3. Migrate old config to new kernel
+   If you use old configuration and don't what to deside all new kernel configuration manually,you should use this command
+
+```bash
+make olddefconfig
+```
+
+4. chose driver configuration base on current hardware
+   If you want to let kernel auto deside what driver configuration should be enable or disable, you should use this command
+
+```bash
+make localmodeconfig
+```
+
+And we is finally getting to the stage we can tweak something.
+Choose a good kernel configuration tool, i recommend nconfig, or menuconfig is also fine.
+
+```bash
+make nconfig
+```
+
+Bingo, you able to select what ever kernel function you want to use!
+You can read the offical linux kernel configuration manual by this link:
+[gentoo kernel configuration guide](https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide)
+
+### compile kernel
+
+Good, we need compile kernel! this will take a while...
+Use all of your computing power:
+
+```bash
+make -j(nproc)
+```
+
+Or manual input count of your threads avaliable.
+
+```bash
+make -j(HOW MANY THREADS YOU WANT TO USE, EVALUATE WITH MEMORY like 1 thread consume 200MB memory)
+```
+
+Don't forget install module! it is really easy to forget.
+
+```bash
+make modules_install
+```
+
+When kernel and all module is ready, it is time to install it. (it should auto trigger your bootloader or something to auto copy vmlinux and initramfs to your boot partition, if it can do that, recheck the install process about whatever your bootloader is)
+
+```bash
+make install
+```
+
+Fantastic! and finally if you using nvidia graphic card same as me, you should reinstall nvidia-drivers
+
+```bash
+emerge x11-drivers/nvidia-drivers 
+```
+
+Finally, we can reboot the  system, and check out your system is broke or not :)
+If someting go wrong, we also should use old backup kernel to diagnostic and fix the problem.
+
+## End
+
+Yes, the end.
+
+---
+
+---
+url: /article/ITiSWAHTitISISS/index.md
+---
+# Get full Markdown support in helix (With Gentoo Linux)
+Today i finally try to continue my blog, with markdown format and helix editor.
+So, i need get full markdown support in Helix.
+I ran the Helix 'Health' test, then it told me it need language server, and there is two option:
+
+```zsh
+~ ❯❯❯ hx --health markdown
+Configured language servers:
+  ✓ marksman: /usr/bin/marksman
+  ✓ markdown-oxide: /usr/bin/markdown-oxide
+Configured debug adapter: None
+Configured formatter: None
+Highlight queries: ✓
+Textobject queries: ✘
+Indent queries: ✘
+```
+
+Heem,seem like we just simply need install those stuff.
+
+## marksman (lsp-server)
+
+```zsh
+~ ❯❯❯ doas emerge dev-util/marksman
+
+ * IMPORTANT: 1 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+ * Last emerge --sync was 54d 2h 25m 27s ago.
+Calculating dependencies... done!
+Dependency resolution took 0.91 s (backtrack: 0/20).
+
+
+>>> Verifying ebuild manifests
+
+>>> Running pre-merge checks for dev-util/marksman-2024.10.07
+```
+
+Fortunatly, this language server is already inside Gentoo Linux package repository, so we just need simply install it!
+It should work without any configuration.
+
+```zsh
+~ ❯❯❯ marksman                                                                                                                                                                                ✘ 130
+[21:37:13 INF] <LSP Entry> Starting Marksman LSP server: {}
+```
+
+We can recheck Helix health again, it should find marksman under excuteable **$PATH**.
+
+```zsh
+~ ❯❯❯ echo $PATH                                                                                                                                                                              ✘ 130
+/home/ar0m/.local/bin /home/ar0m/.local/share/pnpm /usr/local/sbin /usr/local/bin /usr/bin /opt/bin /usr/lib/llvm/19/bin /usr/lib/llvm/18/bin /etc/eselect/wine/bin /opt/cuda/bin
+```
+
+## markdown-oxide(lsp-server)
+
+Unfortuantly, this language server is not inside Gentoo Linux package repository,
+but lucky, it is a single file excutable program, we can simply download it from it github release section!
+[markdown-oxide github repository](https://github.com/Feel-ix-343/markdown-oxide)
+
+Or if you prefer SourceForge
+[markdown-oxide SOURCEFORGE](https://sourceforge.net/projects/markdown-oxide.mirror/)
+
+After you download correct program suit able for your computer architectrue and OS, you should copy it to the **$PATH** i mention above.
+Finally,Check Helix health again, it should perfectly work!
+
+## prettier(formatter)
+
+Prettier is the generic formatter for web development, it is also support markdown format, i install it from
+
+```bash
+npm install -g prettier
+```
+
+and add configuration in `~/.config/helix/languages.toml`
+
+```toml
+[[language]]
+name = "markdown"
+formatter = { command = "prettier", args = ["--stdin-filepath", "%{buffer_name}"] }
+auto-format = true
+```
+
+Done!
+
+```zsh
+~ ❯❯❯ hx --health markdown
+Configured language servers:
+  ✓ marksman: /usr/bin/marksman
+  ✓ markdown-oxide: /usr/bin/markdown-oxide
+Configured debug adapter: None
+Configured formatter:
+  ✓ /home/ar0m/.local/share/pnpm/prettier
+Tree-sitter parser: ✓
+Highlight queries: ✓
+Textobject queries: ✘
+Indent queries: ✘
+~ ❯❯❯
+```
+
+---
+
+---
+url: /article/w02k6dyj/index.md
+---
+# China C1 Driving License Test Short Guide
+
+## openMAIC 课堂链接
+
+[课堂链接](https://open.maic.chat/classroom/vbN8b1vjFg)
+
+## 1. Overview
+
+The China C1 driving license test is usually divided into four classes:
+
+### 1.1 Class One: Theory Test
+
+Computer-based quiz about traffic rules, signs, laws, and safe driving knowledge.
+
+### 1.2 Class Two: Field Test
+
+Low-speed, short-distance, precise driving tasks performed in a dedicated test field.
+
+### 1.3 Class Three: Road Test
+
+Driving on public roads while performing actions such as turning, overtaking, and gear changes.
+
+### 1.4 Class Four: Safety Knowledge Test
+
+Another computer-based quiz, with more focus on safety awareness and civilized driving.
+
+## 2. Basic Terms
+
+### 2.1 Gear Positions
+
+1. Neutral: gears are not connected, and no power is delivered to the wheels.
+2. 1st gear: 0–10 km/h
+3. 2nd gear: 10–30 km/h
+4. 3rd gear: 25–45 km/h
+5. 4th gear: 35–70 km/h
+6. 5th gear: 60–120 km/h
+7. Reverse: drive backward
+
+### 2.2 Road Markings
+
+1. Line: do not touch or cross it; it marks lane boundaries or limits.
+2. Dash: can be crossed; helps you understand your position.
+
+### 2.3 Vehicle Parts and Controls
+
+1. Rearview mirrors: left, right, and center mirrors used to observe behind the vehicle.
+2. Handbrake: keeps the vehicle stopped.
+3. Clutch: disconnects the engine from the gearbox and helps control power delivery.
+4. Brake: slows the vehicle.
+5. Throttle: increases engine power and speed.
+6. Seat belt: keeps you secured during sudden stops or crashes.
+7. Dashboard: shows vehicle information.
+8. Turn signal: tells others where you intend to go.
+
+## 3. Class One: Theory Test
+
+### 3.1 Study Method
+
+1. Refer to both:
+   1. local theory test materials from the driving school or test center
+   2. the newest published study materials you can find
+2. First get a general outline of the content.
+3. Then practice quiz questions.
+4. After completing about one-third of the total question bank (usually nearly 2000 questions), start taking simulation tests.
+5. If you can regularly score 90/100, you are likely ready to pass.
+
+### 3.2 Main Topics
+
+1. Traffic signals
+   1. police gestures
+   2. traffic lights
+   3. traffic signs
+   4. road markings
+2. License point system
+   1. how points are lost
+   2. common test content
+3. Speed rules
+   1. normal road speed limits
+   2. highway speed limits
+   3. visibility, speed, and following distance
+4. Vehicle instruments
+   1. mechanical instruments
+   2. dashboard signs and meanings
+   3. warning indicators
+   4. lighting and turn signals
+5. Traffic law
+   1. how to get a driving license and where it can be used
+   2. driver administration rules
+   3. special rules for applying for a driving license
+   4. point deduction system
+   5. speeding, overloading, and new rules
+6. New punishment rules
+7. Other common test content
+   1. dangerous driving behavior
+   2. traffic accident types
+   3. how to regain points
+   4. “two licenses, two signs, one plate”
+8. Intelligent driving assistance systems
+9. New rules and date limits
+10. Vehicle registration
+11. situations that require registration changes
+12. how to cancel registration
+13. Full version of point recovery rules
+14. Driving license related topics
+15. do not drive the wrong type of vehicle
+16. how to upgrade your license
+17. Emergency rescue after accidents
+18. Being polite on the road
+19. How to handle accidents
+20. Drunk driving consequences
+
+## 4. Class Two: Field Test
+
+Class Two is about physical practice, muscle memory, and repeated review.\
+This guide is mainly for passing the test. After getting your license, you should continue learning practical real-world driving skills.
+
+### 4.1 Starting the Vehicle
+
+When you get into the vehicle, follow these steps:
+
+1. Fasten your seat belt.
+2. Adjust the seat horizontally so that when you press the clutch fully, your leg still has about a 30-degree bend.
+3. Adjust the seat height so there is still enough headroom.
+4. Adjust the mirrors properly:
+   1. left mirror: you should be able to see the full wheel edge
+   2. right mirror: the door handle should appear near the center, slightly left
+5. Turn the key to the self-check position.
+   1. check dashboard lights
+   2. check handbrake status
+   3. check interior lights are off
+6. Press the clutch fully.
+7. Turn the key to start the engine for a short time, then release it back.
+
+### 4.2 Moving Forward
+
+To move forward:
+
+1. Press the clutch fully.
+2. Shift into 1st gear.
+3. Slowly release the clutch to the half-engagement point.
+4. Hold the clutch there and learn to feel:
+   1. the vibration when half-engaged
+   2. the point where the engine may stall
+5. If the engine stalls:
+   1. shift to neutral
+   2. restart the engine
+   3. begin again
+6. Release the handbrake.
+
+### 4.3 Stopping
+
+To stop safely:
+
+1. Press the brake.
+2. When speed drops below the minimum speed for the current gear, press the clutch fully.
+3. If leaving the vehicle or parking, raise the handbrake.
+
+### 4.4 Basic Positioning
+
+1. Move forward slowly and return to a standard seated posture.
+2. Align the center of the vehicle with the left line of the road.
+3. Use visual references such as:
+   1. the center area near the wiper rivet
+   2. the imagined wheel track of the vehicle
+4. This positioning skill is useful throughout the entire test.
+
+### 4.5 General Cautions
+
+1. When it is your turn to enter the vehicle, begin promptly.
+2. If the next subject area is occupied, stop and wait.
+3. Do not trigger the test area too early.
+4. Do not move into the next area before the previous vehicle has finished.
+
+## 5. Class Two Subjects
+
+### 5.1 Subject One: Start on Ramp
+
+This subject requires very good clutch control.
+
+1. Perform the basic positioning routine.
+2. As you approach the ramp, release the clutch slightly more to get enough power.
+3. Adjust the clutch very gently while keeping the car centered.
+4. As the front of the vehicle nears the stop line, slow down even more.
+5. When the lower edge of the left rearview mirror aligns with the upper line, press the brake halfway and press the clutch slightly deeper.
+6. Pull the handbrake and hold for 5 seconds.
+7. Release the handbrake, raise the clutch slightly, slowly release the brake, and turn the wheel slightly left.
+8. After reaching the top of the ramp, use the brake to control speed on the way down.
+9. Remember to turn left appropriately to prepare for the next subject.
+
+If the engine stalls halfway:
+
+1. Press the brake.
+2. Restart the vehicle.
+3. Repeat the process.
+
+### 5.2 Subject Two: Side Parking
+
+1. Perform the basic positioning routine.
+2. Stop after the bottom of the steering wheel crosses the stop line.
+3. Shift into reverse.
+4. Reverse until the bottom edge of the left rearview mirror nearly touches the cross dash.
+5. Turn the wheel fully right.
+6. Continue slowly backward.
+7. When the third vertical dash on the right appears from the vehicle body, straighten the wheel.
+8. When the wheel reaches the vertical dash, turn fully left.
+9. When the whole vehicle enters the parking area, stop and keep the wheel angle.
+10. Turn on the left turn signal.
+11. Shift into 1st gear.
+12. Move forward slowly.
+13. When the lower-right corner of the window aligns with the right line at about a 45-degree angle, drive straight.
+14. After about 3 seconds, when about two-thirds of the vehicle is out, turn one full round to the right.
+15. Add more right steering if needed.
+16. Return to the basic positioning routine.
+
+### 5.3 Subject Three: Right-Angle Turn
+
+1. Perform the basic positioning routine.
+2. Before the sign, turn on the left turn signal.
+3. Slow down.
+4. When the bottom of the steering wheel reaches the cross dash, or when you judge the front wheels to be at the center of the turn, turn fully left.
+5. After the rear wheels pass the corner, return to the basic positioning routine.
+
+### 5.4 Subject Four: Curve Driving
+
+1. Perform the basic positioning routine.
+2. Keep the left rearview mirror about one-quarter to the left of the left line.
+3. Keep a suitable distance from the left rear wheel to the line, usually around 70 cm.
+4. After the first left curve ends, drive straight.
+5. After about 5 seconds, or using your visual reference point, when the front end of the left line appears near the door handle position, turn right one full round.
+6. Keep matching the front point of the left line with the door handle position.
+7. After the left line ends, drive straight.
+8. Return to the basic positioning routine.
+
+### 5.5 Subject Five: Reverse Parking
+
+1. Perform the basic positioning routine.
+2. Find an empty parking area.
+3. Stay close to the right line, keeping about a 70 cm gap.
+4. When your shoulder aligns with the cross dash of the parking area, turn fully right.
+5. When the wiper rivet aligns with the left corner of the parking rectangle, straighten the wheel.
+6. When the rear wheels cross the left line, turn fully left.
+7. Align the wiper rivet with the sign pole.
+8. Slow down and stop when the bottom of the steering wheel reaches the cross dash.
+9. Shift into reverse.
+10. Reverse slowly.
+11. When the rearview mirror button is about 50 cm from the cross dash, turn fully right.
+12. Look at the right rearview mirror. When the vehicle body reaches the right edge of the third vertical dash, straighten the wheel.
+13. When the middle of the door handle reaches the vertical dashes, turn fully right again.
+14. Look at the left rearview mirror. When the vehicle body aligns with the left line, or slightly beyond it, straighten the wheel.
+15. Adjust the position as needed based on experience.
+16. Stop when the center of the wheel passes slightly over the back line.
+17. Shift into 1st gear.
+18. Move straight forward.
+19. When your shoulder reaches the cross dash and line, turn left one and a half rounds.
+20. Continue moving; you may go slightly faster.
+21. When the front wheel crosses the cross dash, stop.
+22. Shift into reverse.
+23. Reverse straight without turning the wheel.
+24. Watch the left rearview mirror. When the wheel is about to reach the extension of the left border of the first dash, turn fully right.
+25. Repeat the alignment and adjustment steps.
+26. Stop at the correct final position.
+27. Shift into 1st gear.
+28. Move forward again.
+29. When the shoulder reaches the cross dash and line, turn right one round.
+30. When the rear wheel reaches the cross dash, turn fully right.
+31. Stop after the front wheel crosses the next cross dash.
+32. Finish.
+
+## 6. Class Three: Road Test
+
+Class Three focuses more on practical driving on public roads, but it can still be summarized into a clear outline.
+
+### 6.1 Light Test
+
+Important:
+
+1. Wait until the voice broadcast fully stops before performing the required action.
+2. When the next broadcast starts, stop using the high beam if needed.
+
+Procedure:
+
+1. Turn all lights off and wait for the test to begin.
+2. When the test starts, first turn on the low beam.
+3. The system will then randomly give scenarios. Respond correctly:
+
+   1. emergency lights on + low beam on:
+      pull over and stop at the roadside
+   2. flash high beam twice:
+      used when meeting another vehicle, overtaking, or passing danger zones such as sharp bends, bridges, and slopes
+   3. low beam on:
+      used in good lighting conditions or when other vehicles are nearby
+   4. high beam on:
+      used in poor lighting conditions
+
+### 6.2 Starting the Engine and Moving Off
+
+1. Honk the horn.
+2. Turn on the left turn signal.
+3. Shift into 1st gear.
+4. Release the handbrake.
+
+### 6.3 When Turning
+
+1. Turn on the correct turn signal.
+2. Check the mirror in that direction multiple times.
+3. 2nd gear is usually suitable for turning.
+
+### 6.4 Things to Always Watch For
+
+1. Brake when there is a pedestrian crossing indicator ahead.
+2. Be careful around bus stops.
+3. Be careful near school warning signs.
+4. Stop properly when making a U-turn.
+5. Honk if someone blocks your way and the situation requires warning.
+6. Keep the turn signal on for at least 4 seconds before turning when required.
+
+## 7. Class Four: Safety Knowledge Test
+
+Class Four is similar to Class One, but focuses more on road safety and civilized driving.
+
+### 7.1 Main Topics
+
+1. Recognizing signs, lines, and road situations
+2. Driving skills
+   1. braking, downshifting, and stopping
+   2. handling complex road conditions and bad weather
+   3. highway driving, vehicle fire response, and escaping after driving into water
+   4. dangerous cargo and emergency rescue knowledge
+   5. bad habits and being polite to school buses
+
+---
+
+---
+url: /article/y4mkfv0j/index.md
+---
+# unstable version pakcage on Gentoo Linux
+I want to install latest firefox becuase god damn twitch.tv requeried it, so i will demonstrate with firefox pakcage.
+
+## Query package version
+
+I often use gentoo [package web page](https://packages.gentoo.org/packages/www-client/firefox) to confirm it.
+But you do use some command line to query too if your machine is unable to browser web:
+
+1. eix: `bash eix -e www-client/firefox`
+2. equery(gentoo toolkit): `bash equery list -po www-client/firefox`
+3. pquery(portage-utils):  `bash pquery -v -m www-client/firefox`
+
+I just used equery command i prefer, this software is minimalism and super clean, l like it :)
+
+```bash
+~ ❯❯❯ equery list -po www-client/firefox
+ * Searching for firefox in www-client ...
+[I--] [??] www-client/firefox-128.7.0:esr
+[-P-] [  ] www-client/firefox-128.14.0:esr
+[-P-] [ ~] www-client/firefox-140.2.0:esr
+[-P-] [ ~] www-client/firefox-142.0:rapid
+[-P-] [ ~] www-client/firefox-142.0.1:rapid
+```
+
+### Unmask the package
+
+Once you query out the proper verison you want to install, you can try to install it, if you want to install "rapid"(test/unstable) version of the software, you need fist unmask it.
+So here is Procedure to unmask and install.
+
+```bash
+~ ❯❯❯ doas emerge --ask "=www-client/firefox-142.0.1" --autounmask --autounmask-write
+
+ * IMPORTANT: 1 news items need reading for repository 'gentoo'.
+ * Use eselect news read to view new items.
+
+
+These are the packages that would be merged, in order:
+
+Calculating dependencies... done!
+Dependency resolution took 2.74 s (backtrack: 0/20).
+
+[ebuild     U  ] llvm-core/clang-common-20.1.8 [19.1.7]
+[ebuild     U  ] dev-libs/nspr-4.37 [4.36]
+[ebuild     U ~] dev-libs/nss-3.115.1 [3.101.3] USE="-test-full%" 
+[ebuild  NS    ] dev-lang/rust-bin-1.88.0 [1.81.0-r103, 1.82.0-r103, 1.83.0-r1, 1.84.1-r2] LLVM_SLOT="(20%*)" 
+[ebuild     U  ] llvm-runtimes/openmp-20.1.8 [19.1.7] PYTHON_SINGLE_TARGET="python3_13* -python3_12* (-python3_14)" 
+[ebuild  NS    ] llvm-core/llvm-20.1.8 [18.1.8-r6, 19.1.7] LLVM_TARGETS="(SPIRV*)" 
+[ebuild  NS    ] llvm-core/llvm-toolchain-symlinks-20-r1 [18-r1, 19]
+[ebuild     U  ] llvm-core/llvmgold-20 [19]
+[ebuild  NS    ] llvm-core/clang-20.1.8 [18.1.8-r6, 19.1.7] LLVM_TARGETS="(SPIRV*)" PYTHON_SINGLE_TARGET="python3_13* -python3_12* (-python3_14)" 
+[ebuild  NS    ] llvm-core/clang-toolchain-symlinks-20 [18, 19]
+[ebuild  NS    ] llvm-runtimes/compiler-rt-20.1.8 [18.1.8-r2, 19.1.7]
+[ebuild  NS    ] llvm-runtimes/compiler-rt-sanitizers-20.1.8 [18.1.8-r6, 19.1.7] USE="nsan%* rtsan%*" 
+[ebuild  NS    ] llvm-runtimes/clang-runtime-20.1.8 [18.1.8, 19.1.7] USE="-default-compiler-rt% -default-libcxx% -default-lld% -llvm-libunwind% -polly%" 
+[ebuild  NS    ] llvm-core/lld-20.1.8 [19.1.7] LLVM_TARGETS="(AArch64%*) (AMDGPU%*) (ARM%*) (AVR%*) (BPF%*) (Hexagon%*) (Lanai%*) (LoongArch%*) (MSP430%*) (Mips%*) (NVPTX%*) (PowerPC%*) (RISCV%*) (SPIRV%*) (Sparc%*) (SystemZ%*) (VE%*) (WebAssembly%*) (X86%*) (XCore%*) -ARC% -CSKY% -DirectX% -M68k% -Xtensa%" 
+[ebuild  NS    ] llvm-core/lld-toolchain-symlinks-20 [19]
+[ebuild  NS   ~] www-client/firefox-142.0.1 [128.7.0] USE="(-jpegxl) -system-pipewire% -test% (-valgrind)" LLVM_SLOT="20%* -19*" 
+[uninstall     ] www-client/firefox-128.7.0 
+[blocks b      ] www-client/firefox:rapid ("www-client/firefox:rapid" is soft blocking www-
+```
+
+and use dispatch-conf to confirm the changes.
+
+```bash
+doas dispatch-conf
+```
+
+```bash
++# required by =www-client/firefox-142.0.1 (argument)
++=www-client/firefox-142.0.1 ~amd64
+
+>> (1 of 1) -- /etc/portage/package.accept_keywords/zz-autounmask
+>> q quit, h help, n next, e edit-new, z zap-new, u use-new
+   m merge, t toggle-merge, l look-merge: 
+
+```
+
+Press "u" on your tiny cute keyboard and we done.
+
+### Now normal install it and everything not gonna warning and stop you
+
+```bash
+doas emerge --ask "=www-client/firefox-142.0.1"
+```
+
+I can secuess full install it! If you run in to and problem please leave some comment :)
+
+---
+
+---
+url: /blog/k27q6y9z/index.md
+---
+# Windows Isolated Sandbox Account Generate Script
+
+A lightweight PowerShell automation script designed to create an isolated local Windows standard user with customized directory and drive access controls. It streamlines security containment while bypassing all tedious first-logon setup screens.
+
+***
+
+## Demo Preview
+
+![Demo Walkthrough](/gif/exsample.gif)
+
+## Key Features
+
+* **Automated Parameter Support**: Run interactively or supply arguments directly (`.\nameofthescript.ps1 <username> <target_folder>`).
+* **Interactive Drive Access Control**: Enumerates all fixed drives with per-drive options (`Deny All`, `Read-Only`, `Read/Write`, or `Skip`).
+* **System Drive Safeguard**: Automatically protects `C:\` to prevent breaking the operating system and account logon.
+* **Directory Isolation**: Strips inherited permissions on your specified folder and grants dedicated access (`Full Control`, `Modify`, or `Read & Execute`).
+* **Zero-Friction First Logon**: Automatically suppresses the Windows OOBE privacy screens, initial logon animation ("Hi / Getting things ready"), and Microsoft Edge welcome guides.
+* **Bilingual Interface**: Automatically detects system UI language and displays prompts in English or Chinese.
+
+***
+
+## Requirements
+
+* **OS**: Windows 10 / Windows 11 / Windows Server 2016+
+* **Privileges**: Administrator permissions (PowerShell run as Administrator)
+* **Filesystem**: NTFS drives (for ACL manipulation)
+
+***
+
+## Quick Start
+
+### 1. Run Interactively
+
+Open PowerShell as **Administrator** and run the script, you should paste it in to a nameofthescript.ps1 file before:
+
+````powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\nameofthescriipt.ps1
+
+```powershell
+
+#Requires -RunAsAdministrator
+
+<#
+.SYNOPSIS
+    创建具有驱动器和目录访问控制的 Windows 本地隔离账户。
+.DESCRIPTION
+    交互式创建一个本地标准用户，并使用权限控制模型将其文件系统访问限制在指定目录。
+    支持遍历检测系统中所有固定驱动器并秒级配置读写/只读/禁止访问权限。
+    自动将新账户加入 BUILTIN\Users 组以保障交互登录，并保护系统盘（C盘）禁止完全封锁。
+
+.NOTES
+    需要：管理员权限
+    版本：3.4
+#>
+
+param(
+    [string]$Username,
+    [string]$TargetPath
+)
+
+# --- 语言检测 ---
+$lang = if ((Get-UICulture).Name -like "zh-*") { "zh" } else { "en" }
+
+$strings = @{
+    "en" = @{
+        ErrNotAdmin             = "This script requires Administrator privileges. Please re-run as Administrator."
+        PromptUsername          = "Enter username for the new account (e.g., sandbox-user)"
+        ErrEmptyUsername        = "Username cannot be empty."
+        ErrUserExists           = "User '{0}' already exists. Aborting."
+        PromptPath              = "Enter folder path to isolate (press Enter for: '{0}')"
+        ErrPathInvalid          = "Path '{0}' does not exist or is not a directory. Aborting."
+        PromptPassword          = "Set password for '{0}'"
+        ErrEmptyPassword        = "Password cannot be empty. Aborting."
+        PromptFullName          = "Account Full Name (press Enter for '{0}')"
+        PromptDescription       = "Account Description (max 48 chars, press Enter for '{0}')"
+        ErrDescTooLong          = "Description cannot exceed 48 characters. Current length: {0}."
+        PromptPermLevel         = "Select folder permission level for '{0}':`n  [1] Full Control (F)`n  [2] Modify / Read-Write (M)`n  [3] Read & Execute (RX)`nChoice (1-3, default: 1)"
+        DriveSectionHeader      = "`n--- Configure Access for System Drives ---"
+        PromptSystemDriveAccess = "Access for SYSTEM drive [{0}] ({1}, Free: {2} GB) [Deny access is disabled to ensure logon]:`n  [1] Default / Skip (Recommended)`n  [2] Read-Only (RX)`n  [3] Full Read & Write (M)`nChoice (1-3, default: 1)"
+        PromptDriveAccess       = "Access for data drive [{0}] ({1}, Free: {2} GB):`n  [1] Deny All Access (No Read / No Write)`n  [2] Read-Only (RX)`n  [3] Full Read & Write (M)`n  [4] Default / Skip`nChoice (1-4, default: 1)"
+        WarnTargetDriveDeny     = "Note: Drive {0} contains target folder. Applying folder-specific override."
+
+        CreatingUser            = "Creating user '{0}'..."
+        UserCreated             = "User '{0}' created successfully."
+        AddedToUsersGroup       = "User '{0}' successfully added to default 'Users' group."
+        ConfiguringDrives       = "Configuring drive access permissions..."
+        DrivePermSet            = "Drive [{0}] permission applied: {1}"
+        LockingFolder           = "Applying isolated permissions to '{0}'..."
+        ErrDisableInherit       = "Failed to break inheritance on '{0}'."
+        ErrGrantPerm            = "Failed to grant ACL '{0}'."
+        PermissionsSet          = "Folder ACL configured successfully."
+        Complete                = "All done! User '{0}' is restricted to '{1}'."
+        ErrGeneric              = "An error occurred: {0}"
+    }
+    "zh" = @{
+        ErrNotAdmin             = "此脚本需要管理员权限，请以管理员身份重新运行。"
+        PromptUsername          = "请输入新账户用户名 (例如: sandbox-user)"
+        ErrEmptyUsername        = "用户名不能为空。"
+        ErrUserExists           = "用户 '{0}' 已存在，操作中止。"
+        PromptPath              = "请输入要隔离的文件夹路径 (直接回车使用当前目录: '{0}')"
+        ErrPathInvalid          = "路径 '{0}' 不存在或不是目录，操作中止。"
+        PromptPassword          = "请为用户 '{0}' 设置密码"
+        ErrEmptyPassword        = "密码不能为空，操作中止。"
+        PromptFullName          = "用户全名 (直接回车默认: '{0}')"
+        PromptDescription       = "账户描述 (不能超过 48 个字符，直接回车默认: '{0}')"
+        ErrDescTooLong          = "描述长度不能超过 48 个字符，当前长度: {0}。"
+        PromptPermLevel         = "请选择对目标文件夹的授权级别:`n  [1] 完全控制 (Full Control - F)`n  [2] 读写/修改 (Modify - M)`n  [3] 只读与执行 (Read & Execute - RX)`n请输入选项 (1-3，默认: 1)"
+        DriveSectionHeader      = "`n--- 配置驱动器全局访问控制 ---"
+        PromptSystemDriveAccess = "配置系统引导盘 [{0}] 访问权限 (卷标: {1}, 剩余空间: {2} GB) [为确保正常登录，已禁用完全禁止选项]:`n  [1] 保持系统默认 / 跳过 (推荐)`n  [2] 只读访问 (允许读取与执行，禁止写入)`n  [3] 完全读写 (允许读取与写入)`n请输入选项 (1-3，默认: 1)"
+        PromptDriveAccess       = "配置数据驱动器 [{0}] 访问权限 (卷标: {1}, 剩余空间: {2} GB):`n  [1] 完全禁止访问 (无法读取/无法写入)`n  [2] 只读访问 (允许读取与执行，禁止写入)`n  [3] 完全读写 (允许读取与写入)`n  [4] 保持默认 / 跳过`n请输入选项 (1-4，默认: 1)"
+        WarnTargetDriveDeny     = "提示: 驱动器 {0} 包含目标工作目录，将仅对根目录施加限制并放行目标子目录。"
+
+        CreatingUser            = "正在创建用户 '{0}'..."
+        UserCreated             = "用户 '{0}' 创建成功。"
+        AddedToUsersGroup       = "用户 '{0}' 已成功加入系统 'Users' 用户组。"
+        ConfiguringDrives       = "正在配置各驱动器权限..."
+        DrivePermSet            = "驱动器 [{0}] 权限已应用: {1}"
+        LockingFolder           = "正在为 '{0}' 应用隔离权限..."
+        ErrDisableInherit       = "无法在 '{0}' 上禁用权限继承。"
+        ErrGrantPerm            = "授予权限 '{0}' 失败。"
+        PermissionsSet          = "目标文件夹访问控制权限已成功应用。"
+        Complete                = "配置完成！用户 '{0}' 的访问已被严格限制在 '{1}'。"
+        ErrGeneric              = "发生错误: {0}"
+    }
+}
+$L = $strings[$lang]
+
+# --- 检查管理员权限 ---
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
+    [Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Write-Host $L.ErrNotAdmin -ForegroundColor Red
+    return
+}
+
+try {
+    # 1. 用户名（若命令行已传参则直接使用）
+    $finalUsername = $Username
+    if ([string]::IsNullOrWhiteSpace($finalUsername)) {
+        $finalUsername = Read-Host -Prompt $L.PromptUsername
+    }
+    if ([string]::IsNullOrWhiteSpace($finalUsername)) {
+        throw $L.ErrEmptyUsername
+    }
+    if (Get-LocalUser -Name $finalUsername -ErrorAction SilentlyContinue) {
+        throw ($L.ErrUserExists -f $finalUsername)
+    }
+
+    # 2. 隔离目录
+    $defaultPath = (Get-Location).Path
+    $finalPath = $TargetPath
+    if ([string]::IsNullOrWhiteSpace($finalPath)) {
+        $finalPath = Read-Host -Prompt ($L.PromptPath -f $defaultPath)
+    }
+    if ([string]::IsNullOrWhiteSpace($finalPath)) {
+        $finalPath = $defaultPath
+    }
+    if (-not (Test-Path -LiteralPath $finalPath -PathType Container)) {
+        throw ($L.ErrPathInvalid -f $finalPath)
+    }
+    $finalPath = (Resolve-Path -LiteralPath $finalPath).Path
+    $targetDrive = (Get-Item -LiteralPath $finalPath).PSDrive.Name.ToUpper() + ":"
+    $sysDrive = $env:SystemDrive.ToUpper()
+
+    # 3. 密码
+    $password = Read-Host -Prompt ($L.PromptPassword -f $finalUsername) -AsSecureString
+    if ($password.Length -eq 0) {
+        throw $L.ErrEmptyPassword
+    }
+
+    # 4. 全名 (Full Name) 自定义
+    $defaultFullName = "Sandbox Account"
+    $inputFullName = Read-Host -Prompt ($L.PromptFullName -f $defaultFullName)
+    $finalFullName = if ([string]::IsNullOrWhiteSpace($inputFullName)) { $defaultFullName } else { $inputFullName }
+
+    # 5. 描述 (Description) 自定义与 SAM 48 字符校验
+    $defaultDesc = "Sandbox account"
+    $inputDesc = Read-Host -Prompt ($L.PromptDescription -f $defaultDesc)
+    $finalDesc = if ([string]::IsNullOrWhiteSpace($inputDesc)) { $defaultDesc } else { $inputDesc }
+    if ($finalDesc.Length -gt 48) {
+        throw ($L.ErrDescTooLong -f $finalDesc.Length)
+    }
+
+    # 6. 目标目录授权级别
+    Write-Host ($L.PromptPermLevel -f $finalUsername) -ForegroundColor Yellow
+    $permLevelChoice = Read-Host -Prompt ">"
+    $userPermission = switch ($permLevelChoice.Trim()) {
+        "2" { "M" }
+        "3" { "RX" }
+        Default { "F" }
+    }
+
+    # 7. 遍历所有固定驱动器配置读写访问权限
+    Write-Host $L.DriveSectionHeader -ForegroundColor Cyan
+    $fixedDrives = Get-CimInstance Win32_LogicalDisk -Filter "DriveType = 3"
+    $driveConfigList = @()
+
+    foreach ($drive in $fixedDrives) {
+        $dLetter = $drive.DeviceID
+        $volName = if ($drive.VolumeName) { $drive.VolumeName } else { "Local Disk" }
+        $freeGB  = [math]::Round($drive.FreeSpace / 1GB, 1)
+
+        Write-Host ""
+        if ($dLetter.ToUpper() -eq $sysDrive) {
+            # 系统引导盘（C:）不可禁止访问，防止用户配置文件无法初始化
+            Write-Host ($L.PromptSystemDriveAccess -f $dLetter, $volName, $freeGB) -ForegroundColor Yellow
+            $dChoice = Read-Host -Prompt ">"
+            $mappedAction = switch ($dChoice.Trim()) {
+                "2"     { "RX" }
+                "3"     { "M" }
+                Default { "SKIP" }
+            }
+        }
+        else {
+            # 数据盘可完整配置
+            Write-Host ($L.PromptDriveAccess -f $dLetter, $volName, $freeGB) -ForegroundColor Yellow
+            $dChoice = Read-Host -Prompt ">"
+            $mappedAction = switch ($dChoice.Trim()) {
+                "2"     { "RX" }
+                "3"     { "M" }
+                "4"     { "SKIP" }
+                Default { "DENY" }
+            }
+        }
+
+        $driveConfigList += [PSCustomObject]@{
+            DriveID = $dLetter
+            Action  = $mappedAction
+        }
+    }
+
+    Write-Host "`n================== 开始执行配置 ==================" -ForegroundColor Cyan
+
+    # 执行创建本地标准用户
+    Write-Host ($L.CreatingUser -f $finalUsername) -ForegroundColor Cyan
+    New-LocalUser -Name $finalUsername `
+        -Password $password `
+        -FullName $finalFullName `
+        -Description $finalDesc | Out-Null
+    Write-Host ($L.UserCreated -f $finalUsername) -ForegroundColor Green
+
+    # 将新账户明确加入 BUILTIN\Users 组（SID: S-1-5-32-545，跨语言系统通用）
+    $builtinUsers = Get-LocalGroup | Where-Object { $_.SID -eq 'S-1-5-32-545' }
+    if ($builtinUsers) {
+        Add-LocalGroupMember -Group $builtinUsers.Name -Member $finalUsername -ErrorAction SilentlyContinue
+    } else {
+        Add-LocalGroupMember -Group "Users" -Member $finalUsername -ErrorAction SilentlyContinue
+    }
+    Write-Host ($L.AddedToUsersGroup -f $finalUsername) -ForegroundColor Green
+
+    # 遍历配置驱动器权限
+    Write-Host $L.ConfiguringDrives -ForegroundColor Cyan
+
+    foreach ($cfg in $driveConfigList) {
+        # 注意：使用双反斜杠 '\\' 防止 PowerShell 将尾部 '\' 与引号结合导致参数转义损坏
+        $safeDriveRoot = "$($cfg.DriveID)\\"
+        $isTargetDrive = ($cfg.DriveID.ToUpper() -eq $targetDrive)
+
+        switch ($cfg.Action) {
+            "DENY" {
+                if ($isTargetDrive) {
+                    Write-Host ($L.WarnTargetDriveDeny -f $cfg.DriveID) -ForegroundColor DarkYellow
+                    & icacls.exe $safeDriveRoot /deny "${finalUsername}:(NP)(OI)(CI)F" /q | Out-Null
+                } else {
+                    & icacls.exe $safeDriveRoot /deny "${finalUsername}:(OI)(CI)F" /q | Out-Null
+                }
+                Write-Host ($L.DrivePermSet -f $cfg.DriveID, "Deny") -ForegroundColor Green
+            }
+            "RX" {
+                & icacls.exe $safeDriveRoot /grant "${finalUsername}:(OI)(CI)RX" /q | Out-Null
+                Write-Host ($L.DrivePermSet -f $cfg.DriveID, "ReadOnly (RX)") -ForegroundColor Green
+            }
+            "M" {
+                & icacls.exe $safeDriveRoot /grant "${finalUsername}:(OI)(CI)M" /q | Out-Null
+                Write-Host ($L.DrivePermSet -f $cfg.DriveID, "ReadWrite (M)") -ForegroundColor Green
+            }
+            Default {
+                # 跳过
+            }
+        }
+    }
+
+    # 配置目标隔离目录 ACL
+    Write-Host ($L.LockingFolder -f $finalPath) -ForegroundColor Cyan
+    & icacls.exe $finalPath /inheritance:r /q | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw ($L.ErrDisableInherit -f $finalPath) }
+
+    $grants = @(
+        "SYSTEM:(OI)(CI)F",
+        "Administrators:(OI)(CI)F",
+        "${finalUsername}:(OI)(CI)${userPermission}"
+    )
+    foreach ($grant in $grants) {
+        & icacls.exe $finalPath /grant $grant /q | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw ($L.ErrGrantPerm -f $grant) }
+    }
+    Write-Host $L.PermissionsSet -ForegroundColor Green
+
+    Write-Host "==================================================" -ForegroundColor Green
+    Write-Host ($L.Complete -f $finalUsername, $finalPath) -ForegroundColor Green
+    Write-Host "==================================================" -ForegroundColor Green
+}
+catch {
+    Write-Host ($L.ErrGeneric -f $_.Exception.Message) -ForegroundColor Red
+}
+````
+
+---
+
+---
+url: /zh/article/133dx7x9/index.md
+---
+# Fix alsa library error on Gentoo Linux(samplerate)
+Recently, i found some unknown bug when i want to play music with rust library `rodio`.
+Music is playing smooth, but the error message print on screen will total screw [my project](https://github.com/jindongjie/Portal_StillAlive_Rust).
+
+```bash
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/dlmisc.c:339:(snd_dlobj_cache_get0) Cannot open shared library libasound_module_rate_samplerate_best.so (/usr/lib64/alsa-lib/libasound_module_rate_samplerate_best.so: cannot open shared object file: No such file or directory)
+ALSA lib /var/tmp/portage/media-libs/alsa-lib-1.2.13-r3/work/alsa-lib-1.2.13/src/pcm/pcm_rate.c:1581:(snd_pcm_rate_open) Cannot find rate converter
+```
+
+I think it is related to my alsa(Advance Linux Sound Architectrue)[description](https://www.alsa-project.org/wiki/Main_Page) library is uninstall.
+So i search for information about this library *xxxx\_samperate\_best.so*
+I found some acient post exactly in count this problem, but sadly no any solution :( [Gentoo Form Post Link](https://forums.gentoo.org/viewtopic-p-7158386.html).
+
+So i ask for AI, then it recommand me to do so:
+
+```bash
+echo "media-plugins/alsa-plugins samplerate" | doas tee -a /etc/portage/package.use/alsa
+emerge --ask media-plugins/alsa-plugins
+```
+
+Unable to work.
+But it inspire me to check the alsa compile flag relate to "samplerate"!
+[alsa-plugin repository page](https://packages.gentoo.org/packages/media-plugins/alsa-plugins)
+Yes! I try it, and it work perfectly!
+
+**simple solution**
+
+```bash
+echo "media-plugins/alsa-plugins libsamplerate" | doas tee -a /etc/portage/package.use/alsa
+emerge --ask media-plugins/alsa-plugins
+```
